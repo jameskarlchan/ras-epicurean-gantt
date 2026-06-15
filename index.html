@@ -20,7 +20,8 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; font-size: 15px; -webkit-font-smoothing: antialiased; }
-.wrap { max-width: 1480px; margin: 0 auto; padding: 28px 24px 56px; }
+.wrap { max-width: 1480px; margin: 0 auto; padding: 28px 24px 56px; transition: padding-right 0.32s cubic-bezier(0.2, 0.8, 0.2, 1); }
+body.panel-open .wrap { padding-right: 440px; }
 
 .masthead { background: linear-gradient(135deg, var(--black) 0%, var(--black-soft) 60%, #1F1F26 100%); color: var(--gold); padding: 28px 36px; border-radius: 6px; margin-bottom: 22px; position: relative; overflow: hidden; box-shadow: 0 4px 18px var(--shadow-md); }
 .masthead::before { content: ""; position: absolute; top: -80px; right: -80px; width: 260px; height: 260px; border: 2px solid var(--gold-deep); border-radius: 50%; opacity: 0.32; }
@@ -35,13 +36,7 @@ html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvet
 .countdown-unit { font-family: "Cambria", "Georgia", serif; font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-top: 6px; font-weight: 600; }
 .countdown-label { font-size: 10px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 8px; opacity: 0.72; font-weight: 500; }
 
-/* Sheet connection bar */
-.sheet-status {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 16px; border-radius: 4px; margin-bottom: 14px;
-  font-size: 12.5px; letter-spacing: 0.02em;
-  background: var(--paper); border: 1px solid var(--rule);
-}
+.sheet-status { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 4px; margin-bottom: 14px; font-size: 12.5px; background: var(--paper); border: 1px solid var(--rule); }
 .sheet-status.connected { background: linear-gradient(90deg, var(--green-pale) 0%, #F0F6F0 100%); border-color: var(--green); }
 .sheet-status.disconnected { background: linear-gradient(90deg, var(--amber-pale) 0%, #FBF4DC 100%); border-color: var(--amber); }
 .sheet-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -49,7 +44,6 @@ html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvet
 .sheet-status.disconnected .sheet-status-dot { background: var(--amber); box-shadow: 0 0 0 3px rgba(184, 130, 26, 0.18); }
 .sheet-status-text { flex: 1; }
 .sheet-status-text strong { font-weight: 700; }
-.sheet-status .btn { font-size: 11px; padding: 5px 10px; }
 
 .summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 20px; }
 .metric { background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 14px 16px; position: relative; overflow: hidden; }
@@ -70,11 +64,8 @@ html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvet
 .toolbar-label { font-family: "Cambria", "Georgia", serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); font-weight: 600; margin-right: 4px; }
 .btn, select.btn { padding: 7px 13px; background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; cursor: pointer; font-size: 12px; color: var(--ink); font-weight: 500; font-family: inherit; letter-spacing: 0.04em; transition: all 0.15s; }
 .btn:hover { border-color: var(--gold-deep); }
-.btn.primary { background: var(--black); color: var(--gold); border-color: var(--black); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; padding: 8px 18px; }
-.btn.primary:hover { background: var(--gold-deep); border-color: var(--gold-deep); color: #F5F1E8; }
 .btn.generate { background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold) 100%); color: var(--black); border: 1px solid var(--gold-deep); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; font-size: 12px; padding: 9px 24px; box-shadow: 0 2px 6px rgba(140, 114, 57, 0.32); }
 .btn.generate:hover { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%); box-shadow: 0 4px 10px rgba(140, 114, 57, 0.42); transform: translateY(-1px); }
-.btn.danger { color: var(--crimson); }
 .btn.sheet { background: var(--green-pale); border-color: var(--green); color: var(--green-deep); font-weight: 600; }
 .btn.sheet:hover { background: var(--green); color: white; }
 select.btn { padding-right: 8px; }
@@ -114,6 +105,7 @@ select.btn { padding-right: 8px; }
 
 .gantt-task-name { padding: 9px 18px 9px 36px; font-size: 13px; color: var(--ink); background: var(--paper); border-bottom: 1px solid var(--rule-soft); border-right: 1px solid var(--rule); position: sticky; left: 0; z-index: 5; display: flex; align-items: center; cursor: pointer; line-height: 1.3; min-height: 42px; transition: background 0.12s; }
 .gantt-task-name:hover { background: var(--gold-faint); }
+.gantt-task-name.active-task { background: var(--gold-pale); }
 .gantt-task-name-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .gantt-task-owner { font-size: 10px; color: var(--muted); background: var(--grey-pale); padding: 2px 7px; border-radius: 2px; margin-left: 8px; white-space: nowrap; font-weight: 500; }
 .gantt-task-timeline { position: relative; background: var(--paper); border-bottom: 1px solid var(--rule-soft); min-height: 42px; }
@@ -150,37 +142,168 @@ select.btn { padding-right: 8px; }
 .today-line { width: 0; border-left: 2px dashed var(--gold-deep); }
 .event-line { width: 0; border-left: 3px solid var(--crimson); box-shadow: 0 0 8px rgba(139, 26, 26, 0.4); }
 
-.tooltip { position: fixed; background: linear-gradient(180deg, var(--black) 0%, var(--black-soft) 100%); color: #F5F1E8; padding: 14px 16px; border-radius: 4px; font-size: 12px; line-height: 1.5; max-width: 340px; z-index: 200; pointer-events: none; box-shadow: 0 6px 24px rgba(0,0,0,0.42); border: 1px solid var(--gold-deep); display: none; }
+/* Compact hover tooltip */
+.tooltip { position: fixed; background: linear-gradient(180deg, var(--black) 0%, var(--black-soft) 100%); color: #F5F1E8; padding: 12px 14px; border-radius: 4px; font-size: 12px; line-height: 1.5; max-width: 280px; z-index: 200; pointer-events: none; box-shadow: 0 6px 24px rgba(0,0,0,0.42); border: 1px solid var(--gold-deep); display: none; }
 .tooltip.show { display: block; }
-.tooltip-title { font-family: "Cambria", "Georgia", serif; font-weight: 700; font-size: 14px; color: var(--gold-bright); margin-bottom: 8px; }
-.tooltip-meta { display: flex; gap: 12px; font-size: 11px; color: var(--gold); margin-bottom: 8px; }
-.tooltip-status { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; padding: 3px 8px; border-radius: 2px; font-weight: 700; margin-bottom: 8px; }
+.tooltip-title { font-family: "Cambria", "Georgia", serif; font-weight: 700; font-size: 13px; color: var(--gold-bright); margin-bottom: 6px; }
+.tooltip-status { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; padding: 2px 7px; border-radius: 2px; font-weight: 700; margin-bottom: 6px; }
 .tooltip-status.done { background: var(--green); color: white; }
 .tooltip-status.progress { background: var(--amber); color: white; }
 .tooltip-status.blocked { background: var(--crimson); color: white; }
 .tooltip-status.not-started { background: var(--grey); color: var(--ink); }
-.tooltip-block { border-left: 2px solid var(--crimson); padding-left: 10px; margin-bottom: 8px; font-size: 11.5px; }
-.tooltip-block-label, .tooltip-next-label { display: block; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 3px; }
-.tooltip-next-label { margin-top: 8px; }
-.tooltip-summary { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(201, 169, 97, 0.22); font-style: italic; font-size: 11.5px; color: #E8DFC7; }
+.tooltip-meta { font-size: 11px; color: var(--gold); margin-bottom: 8px; }
+.tooltip-summary { font-style: italic; font-size: 11.5px; color: #E8DFC7; line-height: 1.5; padding-top: 8px; border-top: 1px solid rgba(201, 169, 97, 0.22); }
+.tooltip-hint { font-size: 10px; color: var(--gold); margin-top: 8px; letter-spacing: 0.06em; opacity: 0.7; }
 
-.modal-bg { position: fixed; inset: 0; background: rgba(15, 15, 18, 0.62); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; backdrop-filter: blur(2px); }
-.modal-bg.show { display: flex; }
-.modal { background: var(--paper); border-radius: 4px; padding: 28px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.32); }
-.modal h2 { font-family: "Cambria", "Georgia", serif; font-size: 24px; margin-bottom: 4px; font-style: italic; }
-.modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
-.field { margin-bottom: 14px; }
-.field label { display: block; font-family: "Cambria", "Georgia", serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
-.field input, .field textarea, .field select { width: 100%; padding: 9px 11px; border: 1px solid var(--rule); border-radius: 3px; font-size: 14px; font-family: inherit; background: var(--paper-warm); }
-.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--gold-deep); background: white; }
-.field textarea { resize: vertical; min-height: 64px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.modal-actions { display: flex; gap: 8px; justify-content: space-between; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); }
-.modal-actions-right { display: flex; gap: 8px; }
-
-.setup-step { background: var(--gold-pale); border-left: 3px solid var(--gold-deep); padding: 10px 14px; margin-bottom: 10px; border-radius: 0 3px 3px 0; font-size: 12.5px; line-height: 1.6; }
-.setup-step strong { color: var(--gold-deep); font-family: "Cambria", "Georgia", serif; letter-spacing: 0.04em; }
-.setup-step code { background: var(--paper); padding: 1px 6px; border-radius: 2px; font-size: 11px; font-family: monospace; word-break: break-all; }
+/* Slide-out panel */
+.slide-panel {
+  position: fixed; top: 0; right: -440px;
+  width: 420px; height: 100vh;
+  background: var(--paper);
+  border-left: 1px solid var(--rule);
+  box-shadow: -8px 0 24px rgba(0,0,0,0.16);
+  transition: right 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow-y: auto;
+  z-index: 50;
+}
+.slide-panel.open { right: 0; }
+.panel-header {
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--rule);
+  position: sticky; top: 0;
+  background: var(--paper);
+  z-index: 5;
+}
+.panel-close {
+  position: absolute; top: 20px; right: 20px;
+  background: none; border: 1px solid var(--rule);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.panel-close:hover { color: var(--ink); border-color: var(--gold-deep); background: var(--gold-faint); }
+.panel-title {
+  font-family: "Cambria", "Georgia", serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
+  margin-right: 44px;
+  line-height: 1.25;
+}
+.panel-meta {
+  display: flex; gap: 8px; margin-top: 14px;
+  flex-wrap: wrap; align-items: center;
+  font-size: 12px; color: var(--muted);
+}
+.panel-status {
+  display: inline-block;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 4px 9px;
+  border-radius: 2px;
+  font-weight: 700;
+  color: white;
+}
+.panel-status.done { background: var(--green); }
+.panel-status.progress { background: var(--amber); }
+.panel-status.blocked { background: var(--crimson); }
+.panel-status.not-started { background: var(--grey); color: var(--ink); }
+.panel-owner-badge {
+  background: var(--gold-pale);
+  color: var(--gold-deep);
+  padding: 4px 9px;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 11px;
+}
+.panel-dates {
+  font-family: "Cambria", "Georgia", serif;
+  font-style: italic;
+  font-size: 12px;
+}
+.panel-body { padding: 4px 28px 40px; }
+.panel-section { margin-top: 22px; }
+.panel-section-label {
+  font-family: "Cambria", "Georgia", serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold-deep);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.panel-section-text { font-size: 13.5px; line-height: 1.55; color: var(--ink); }
+.panel-blocker {
+  background: var(--crimson-pale);
+  padding: 12px 14px;
+  border-radius: 3px;
+  border-left: 3px solid var(--crimson);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.panel-summary {
+  background: var(--gold-faint);
+  border-left: 3px solid var(--gold-deep);
+  padding: 12px 14px;
+  border-radius: 0 3px 3px 0;
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink);
+  position: relative;
+  padding-right: 80px;
+}
+.panel-copy-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: var(--paper);
+  border: 1px solid var(--gold-deep);
+  color: var(--gold-deep);
+  padding: 4px 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.panel-copy-btn:hover { background: var(--gold-deep); color: white; }
+.panel-copy-btn.copied { background: var(--green); border-color: var(--green); color: white; }
+.playbook-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  counter-reset: pb-counter;
+}
+.playbook-list li {
+  position: relative;
+  padding: 12px 0 12px 42px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  counter-increment: pb-counter;
+}
+.playbook-list li::before {
+  content: counter(pb-counter, decimal-leading-zero);
+  position: absolute;
+  left: 0; top: 13px;
+  font-family: "Cambria", "Georgia", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold-deep);
+  width: 30px;
+  text-align: center;
+}
+.playbook-list li:last-child { border-bottom: none; }
 
 .legend { display: flex; gap: 22px; align-items: center; font-size: 11.5px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; padding: 10px 4px; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
@@ -196,15 +319,27 @@ select.btn { padding-right: 8px; }
 .note { font-size: 12.5px; color: var(--ink); margin-top: 12px; padding: 14px 18px; background: linear-gradient(90deg, var(--gold-pale) 0%, var(--gold-faint) 100%); border-left: 4px solid var(--gold-deep); border-radius: 0 3px 3px 0; line-height: 1.6; }
 .note strong { color: var(--crimson); letter-spacing: 0.04em; }
 
-body.readonly .toolbar, body.readonly .sheet-status { display: none; }
-body.readonly .gantt-cat-name, body.readonly .gantt-task-name, body.readonly .gantt-bar, body.readonly .gantt-milestone { cursor: default; }
-body.sheet-connected .gantt-task-name { cursor: default; }
-body.sheet-connected .gantt-task-name:hover { background: var(--paper); }
-body.sheet-connected .gantt-bar:hover, body.sheet-connected .gantt-milestone:hover { transform: none; }
+.modal-bg { position: fixed; inset: 0; background: rgba(15, 15, 18, 0.62); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; backdrop-filter: blur(2px); }
+.modal-bg.show { display: flex; }
+.modal { background: var(--paper); border-radius: 4px; padding: 28px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.32); }
+.modal h2 { font-family: "Cambria", "Georgia", serif; font-size: 24px; margin-bottom: 4px; font-style: italic; }
+.modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-family: "Cambria", "Georgia", serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+.field input { width: 100%; padding: 9px 11px; border: 1px solid var(--rule); border-radius: 3px; font-size: 14px; font-family: inherit; background: var(--paper-warm); }
+.field input:focus { outline: none; border-color: var(--gold-deep); background: white; }
+.modal-actions { display: flex; gap: 8px; justify-content: space-between; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.modal-actions-right { display: flex; gap: 8px; }
+.btn.primary { background: var(--black); color: var(--gold); border-color: var(--black); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; padding: 8px 18px; }
+.btn.primary:hover { background: var(--gold-deep); border-color: var(--gold-deep); color: #F5F1E8; }
+.btn.danger { color: var(--crimson); }
+.setup-step { background: var(--gold-pale); border-left: 3px solid var(--gold-deep); padding: 10px 14px; margin-bottom: 10px; border-radius: 0 3px 3px 0; font-size: 12.5px; line-height: 1.6; }
+.setup-step strong { color: var(--gold-deep); font-family: "Cambria", "Georgia", serif; letter-spacing: 0.04em; }
 
 @media print {
   body { background: white; }
-  .toolbar, .modal-bg, .tooltip, .sheet-status { display: none !important; }
+  .toolbar, .modal-bg, .tooltip, .sheet-status, .slide-panel { display: none !important; }
+  body.panel-open .wrap { padding-right: 24px; }
   .wrap { max-width: none; padding: 12px; }
   .gantt-scroll { max-height: none; overflow: visible; }
   .gantt { min-width: 100%; }
@@ -215,6 +350,8 @@ body.sheet-connected .gantt-bar:hover, body.sheet-connected .gantt-milestone:hov
   .mast-title { font-size: 24px; }
   .countdown-num { font-size: 44px; }
   .masthead-grid { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .slide-panel { width: 100%; right: -100%; }
+  body.panel-open .wrap { padding-right: 24px; }
 }
 </style>
 </head>
@@ -226,7 +363,7 @@ body.sheet-connected .gantt-bar:hover, body.sheet-connected .gantt-milestone:hov
     <div class="mast-left">
       <div class="mast-eyebrow">Never Back Down · The Arena of Champions</div>
       <div class="mast-title">Epicurean 2026 — Gantt Generator</div>
-      <div class="mast-sub">For James &amp; Xianna only  ·  Wei + co-chairs see the printed chart, not this interface</div>
+      <div class="mast-sub">For James &amp; Xianna  ·  Source of truth lives in Google Sheets  ·  Print for co-chairs</div>
     </div>
     <div class="countdown">
       <div class="countdown-num" id="cdNum">—</div>
@@ -257,13 +394,8 @@ body.sheet-connected .gantt-bar:hover, body.sheet-connected .gantt-milestone:hov
   <span style="flex:1"></span>
   <button class="btn generate" onclick="generateGantt()">↻ Generate</button>
   <span class="gen-timestamp" id="genTimestamp">Click to refresh</span>
-  <button class="btn primary" onclick="openTaskModal()">+ Task</button>
-  <button class="btn" onclick="toggleReadOnly()">Read only</button>
   <button class="btn" onclick="window.print()">Print</button>
-  <button class="btn" onclick="exportJSON()">⬇ JSON</button>
-  <button class="btn" onclick="exportCSV()">⬇ CSV for Sheets</button>
-  <button class="btn" onclick="importJSON()">⬆ Import</button>
-  <button class="btn danger" onclick="resetData()">Reset</button>
+  <button class="btn" onclick="exportCSV()">⬇ CSV</button>
 </div>
 
 <div class="gantt-wrap">
@@ -285,41 +417,31 @@ body.sheet-connected .gantt-bar:hover, body.sheet-connected .gantt-milestone:hov
   <span class="legend-item"><span class="legend-swatch event"></span>Event day</span>
 </div>
 
-<div class="note" id="noteText">
-  <strong>WORKFLOW.</strong> Connect a Google Sheet via "Sheet Settings" so the data has a permanent home. Edit in Sheets, click "Generate" here to pull fresh data and rebuild the chart. The HTML is just the viewer — your data lives safely in Drive.
+<div class="note">
+  <strong>HOW TO USE.</strong> Hover any task for a quick summary. Click for the full playbook with numbered steps. Generate pulls fresh data from your Google Sheet. To change task content, edit the sheet directly — the tool is read-only.
 </div>
 
 </div>
 
 <div class="tooltip" id="tooltip"></div>
 
+<!-- Slide-out panel -->
+<div class="slide-panel" id="slidePanel">
+  <div id="panelContent"></div>
+</div>
+
 <!-- Sheet settings modal -->
 <div class="modal-bg" id="sheetModalBg" onclick="closeSheetModal(event)">
   <div class="modal" onclick="event.stopPropagation()" style="max-width: 680px;">
     <h2>Connect to Google Sheets</h2>
-    <p class="modal-sub">Make your Google Sheet the permanent home for your data. Edit there, regenerate here.</p>
-    <div class="setup-step">
-      <strong>STEP 1 — Get your starter data.</strong><br>
-      Click <em>⬇ CSV for Sheets</em> in the toolbar to download the current task list.
-    </div>
-    <div class="setup-step">
-      <strong>STEP 2 — Create a Google Sheet.</strong><br>
-      Go to sheets.google.com → blank sheet → <em>File → Import → Upload</em> → drop the CSV in → <em>Replace spreadsheet</em>. Name it "Epicurean 2026 Master" or similar.
-    </div>
-    <div class="setup-step">
-      <strong>STEP 3 — Publish the sheet as CSV.</strong><br>
-      In the sheet: <em>File → Share → Publish to web</em>. Set <em>"Entire document"</em> dropdown to the tab you want, set the format to <em>Comma-separated values (.csv)</em>, click Publish. Copy the URL it gives you.
-    </div>
-    <div class="setup-step">
-      <strong>STEP 4 — Paste it below.</strong><br>
-      Paste your published CSV URL here. Click Connect. From now on, "Generate" pulls fresh data from your sheet.
-    </div>
+    <p class="modal-sub">Your Google Sheet is the permanent home for the data. Edit there, regenerate here.</p>
+    <div class="setup-step"><strong>STEP 1.</strong> Click <em>⬇ CSV</em> in the toolbar to download current task list with playbooks.</div>
+    <div class="setup-step"><strong>STEP 2.</strong> sheets.google.com → blank sheet → <em>File → Import → Upload</em> → drop CSV → <em>Replace spreadsheet</em>.</div>
+    <div class="setup-step"><strong>STEP 3.</strong> <em>File → Share → Publish to web</em> → Comma-separated values (.csv) → Publish → copy URL.</div>
+    <div class="setup-step"><strong>STEP 4.</strong> Paste the URL below. Click Connect. Generate now pulls live from the sheet.</div>
     <div class="field" style="margin-top: 18px;">
       <label>Published CSV URL</label>
       <input id="sheetUrlInput" type="text" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv">
-    </div>
-    <div class="setup-step" style="background: var(--crimson-pale); border-left-color: var(--crimson);">
-      <strong style="color: var(--crimson);">IMPORTANT.</strong> Once connected, edits in this tool are temporary — every Generate overwrites them with what's in the sheet. Edit in Sheets, regenerate here. The sheet is the master.
     </div>
     <div class="modal-actions">
       <button class="btn danger" id="disconnectBtn" onclick="disconnectSheet()" style="display:none">Disconnect</button>
@@ -331,49 +453,13 @@ body.sheet-connected .gantt-bar:hover, body.sheet-connected .gantt-milestone:hov
   </div>
 </div>
 
-<!-- Task edit modal -->
-<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <h2 id="modalTitle">New task</h2>
-    <p class="modal-sub">What, who, when, what's blocking.</p>
-    <div class="field"><label>Title</label><input id="f-title" type="text"></div>
-    <div class="field-row">
-      <div class="field"><label>Owner</label><input id="f-owner" type="text" placeholder="James"></div>
-      <div class="field"><label>Category</label><select id="f-cat"></select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Start</label><input id="f-start" type="date"></div>
-      <div class="field"><label>End / due</label><input id="f-end" type="date"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Status</label><select id="f-status">
-        <option value="not-started">Not started</option>
-        <option value="progress">In progress</option>
-        <option value="blocked">Blocked</option>
-        <option value="done">Done</option>
-      </select></div>
-      <div class="field"><label>% complete</label><input id="f-pct" type="number" min="0" max="100" value="0"></div>
-    </div>
-    <div class="field"><label>Blocker</label><textarea id="f-blocker"></textarea></div>
-    <div class="field"><label>Next action</label><textarea id="f-next"></textarea></div>
-    <div class="field"><label>Status in one line</label><textarea id="f-say"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn danger" id="deleteBtn" onclick="deleteTaskFromModal()" style="display:none">Delete</button>
-      <div class="modal-actions-right">
-        <button class="btn" onclick="closeModal()">Cancel</button>
-        <button class="btn primary" onclick="saveTask()">Save</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 const TODAY = new Date('2026-06-15');
 const EVENT_DATE = new Date('2026-09-16');
 const CHART_START = new Date('2025-11-01');
 const CHART_END = new Date('2026-10-31');
 const PX_PER_DAY = 5;
-const STORAGE_KEY = 'ras-epicurean-gantt-v6';
+const STORAGE_KEY = 'ras-epicurean-gantt-v7';
 const SHEET_URL_KEY = 'ras-epicurean-sheet-url';
 
 const CATEGORIES = [
@@ -391,165 +477,315 @@ const CATEGORIES = [
 ];
 
 const DEFAULT_TASKS = [
-  { c:'eo', t:'Outstanding items document for co-chairs', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-17', n:'Compile from minutes + memo. Circulate by 10am Wed.', sm:'Draft Tuesday end of day; co-chairs walk through Wed 10am call; signing falls out of that.' },
-  { c:'eo', t:'Sign Blink Here Events contract (S$34,600)', o:'James', s:'blocked', p:30, sd:'2026-06-15', ed:'2026-06-19', b:'Co-chairs require outstanding items doc + clarifications resolved before endorsing.', n:'Outstanding items memo to co-chairs Wed 17 Jun.', sm:'Signing locks once co-chairs have items list. Quotation S$34,600, down S$5,400.' },
-  { c:'eo', t:'PE & SDL Endorsement (S$2,200) — statutory compliance', o:'James + Blink', s:'not-started', p:0, sd:'2026-06-18', ed:'2026-07-15', n:'Confirm Blink coordinates PE + Structural endorsement for LED installations.', sm:'PE & SDL endorsement included in quotation — statutory compliance for LED installations.' },
-  { c:'eo', t:'AI Video for Andrew & Wei (× 2) per quotation', o:'Blink Here / Andrew', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-08-15', b:'Production cannot start until signed; talent availability not polled.', n:'Poll Wei and Andrew for filming windows; confirm Ben Logan production runway.', sm:'Two AI integrated videos at S$850 each. Wei and Andrew on camera.' },
-  { c:'eo', t:'LED entrance arch — production (Samsung sponsored)', o:'James + Blink', s:'blocked', p:5, sd:'2026-06-16', ed:'2026-08-15', b:'Samsung sponsorship confirmation outstanding.', n:'Lock Samsung Tue 16 Jun; brief Blink immediately.', sm:'Champions arch evolves into Samsung LED arch. Spec: 2 sides 6m × 3m + ceiling 6m × 3m + server.' },
-  { c:'eo', t:'Award reveal mechanic — final call', o:'James', s:'progress', p:60, sd:'2026-06-10', ed:'2026-06-30', n:'Spotlight + LED reveal preferred.', sm:'Spotlight + LED is leading. Locks after signing.' },
-  { c:'eo', t:'LED screen ratios + side screen feeds', o:'James', s:'blocked', p:15, sd:'2026-06-15', ed:'2026-06-25', b:'Awaiting Ben on RWS spec confirmation.', n:'Email Ben by Wed.', sm:'Ben to confirm screen ratios this week.' },
-  { c:'eo', t:'Crew headcount + named on-site command', o:'James', s:'blocked', p:10, sd:'2026-06-15', ed:'2026-06-30', b:'Pending Blink to assign stage manager, FOH, BOH.', n:'Request named individuals in contract addendum.', sm:'Asking Blink to name stage manager, FOH and BOH before signature.' },
-  { c:'eo', t:'Payment milestones (50% + 14 day balance)', o:'James + Vivian', s:'progress', p:50, sd:'2026-06-10', ed:'2026-06-17', n:'Balance window tightened 30 → 14 days. Flag to Vivian.', sm:'Payment now 50% deposit + 14 day balance. Flag cashflow.' },
-  { c:'eo', t:'IP ownership of creative assets', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-17', n:'Add IP clause — RAS owns all assets post event.', sm:'IP ownership clause being added to Blink contract.' },
-  { c:'eo', t:'Backdrop visual + EDM (first deliverables)', o:'Blink Here / Xianna', s:'blocked', p:0, sd:'2026-06-18', ed:'2026-06-30', b:'Cannot start until signed.', n:'Brief Blink on RAS brand assets immediately.', sm:'Backdrop and EDM are Blink first deliverables, post signing.' },
-  { c:'eo', t:'AI animated character video — MC intros (Gladiator style)', o:'Andrew (lead)', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-31', n:'Andrew leads. Mobile footage + AI overlay.', sm:'Animated character intros for MC swearing in.' },
-  { c:'eo', t:'Send RAS logo for Launch Pedestal design', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-18', n:'Email RAS logo to Ben.', sm:'Launch Pedestal needs RAS logo this week.' },
-  { c:'eo', t:'Spotlight cue for GOH arrival', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-15', n:'Build into rehearsal plan.', sm:'GOH gets a spotlight entrance — dim room, single beam.' },
-  { c:'eo', t:'Wristband logic — assign cue controller (160 pcs)', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', n:'Name one controller. New quote has 160 pcs.', sm:'160 wristbands, full hall. One controller.' },
-  { c:'eo', t:'Signature sound cue design', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', n:'Brief Blink — single reusable cue.', sm:'One signature sound cue, same one every year.' },
-  { c:'eo', t:'AAR fixes brief to Blink (5 items)', o:'James', s:'progress', p:40, sd:'2026-06-01', ed:'2026-06-30', n:'Dessert sync, photo marshal, embargo, foyer movement, emcee walkthrough.', sm:'Five AAR fixes being briefed into Blink production planning.' },
-  { c:'eo', t:'Joint site recce — Blink + RWS + RAS', o:'James', s:'blocked', p:0, sd:'2026-06-20', ed:'2026-06-30', b:'Cannot schedule until Blink signs.', n:'Schedule after signing.', sm:'Triple recce booked once Blink signs.' },
-  { c:'eo', t:'2027 teaser video — post-event deliverable', o:'James', s:'progress', p:50, sd:'2026-06-10', ed:'2026-06-17', n:'S$900 in quotation. Cut from 16 Sep footage.', sm:'2027 teaser cut post event. S$900 line item.' },
-  { c:'eo', t:'Cancellation / liability / insurance clauses', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-17', n:'Still 75% on confirmation. Push for tiered.', sm:'Cancellation unchanged at 75%. One final push to tier.' },
-  { c:'eo', t:'Animated backdrop (no extra charge)', o:'Blink Here', s:'blocked', p:0, sd:'2026-06-18', ed:'2026-07-15', b:'Starts post-signing.', n:'Confirm in writing.', sm:'Backdrop animated at no extra charge. Getting in writing.' },
-  { c:'eo', t:'Confirm RWS stage dimensions + load-in route', o:'James', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-06-30', n:'Pull from RWS pack; cross check Blink plan.', sm:'Stage dims and load in route locking after joint recce.' },
+  // ===== EVENT ORGANISER =====
+  { c:'eo', t:'Outstanding items document for co-chairs', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-17', sm:'One-page summary of every item still open from last meeting. Co-chairs walk through Wed 10am call; signing falls out of that.', pb:'Compile pending items from last co-chairs meeting minutes\nFor each item add: status, blocker, next action, owner\nFormat as one-page document\nCirculate to Wei, Andrew and Lamley by 10am Wednesday\nWalk through document on Wednesday call\nCapture co-chair sign-off in writing (WhatsApp counts)' },
 
-  { c:'prog', t:'Full programme rundown — Wednesday deliverable', o:'James', s:'progress', p:60, sd:'2026-06-15', ed:'2026-06-17', n:'Compile spine + banter + swearing in + recognition + close.', sm:'Full rundown lands Wed 10am.' },
-  { c:'prog', t:'Spine locked: 17:00 reg → 22:30 close', o:'James', s:'done', p:100, sd:'2026-06-10', ed:'2026-06-15', n:'Locked.', sm:'Spine: 17:00 reg, 18:30 doors, 19:00 GOH, 19:45 swearing in, 20:00 dinner, 21:10 R2, 22:30 close.' },
-  { c:'prog', t:'19:32 gap content — decision needed', o:'James', s:'blocked', p:0, sd:'2026-06-15', ed:'2026-06-17', b:'13 min slot unassigned.', n:'Decide: President address, sustainability video, or sponsor reel.', sm:'13 min slot to fill — leaning to President address.' },
-  { c:'prog', t:'Pre-engineered Q&A bank for GOH banter', o:'Xianna', s:'progress', p:40, sd:'2026-06-10', ed:'2026-06-17', n:'3 questions per pointer, shared with Minister office.', sm:'Questions pre-engineered, shared with GOH office.' },
-  { c:'prog', t:'Recognition sequence: Chefs, Co-chairs, Events Co', o:'James', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', n:'Build into emcee script.', sm:'Recognition order: chefs first, co-chairs, Blink.' },
-  { c:'prog', t:'Cyril shout-out for finalists', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', n:'Add to emcee script.', sm:'Emcee calls finalists to stand before reveals.' },
-  { c:'prog', t:'Closing song selection (ABBA candidate)', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', n:'Confirm rights/licensing.', sm:'Closing song shortlisted, ABBA front runner.' },
-  { c:'prog', t:'Wristband briefing in emcee housekeeping', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', n:'Cyril briefs colour logic early.', sm:'Wristband colours explained in housekeeping.' },
-  { c:'prog', t:'Embargo briefing protocol (SFA + presenters)', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-15', n:'Locked at 17:00 huddle.', sm:'Embargo discipline rehearsed at the 17:00 briefing.' },
-  { c:'prog', t:'Models — optional, decision by mid July', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-16', n:'Decide.', sm:'Model question parked — decision by mid July.' },
-  { c:'prog', t:'Lock category award sequence (26 cats)', o:'James', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-15', n:'Group by tempo. Crescendo to People\'s Choice.', sm:'26 categories sequenced by tempo.' },
-  { c:'prog', t:'Confirm presenter pairings per category', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', n:'Pair sponsors to relevant categories.', sm:'Presenters paired one per category.' },
-  { c:'prog', t:'Build presenter cue sheets', o:'James', s:'not-started', p:0, sd:'2026-08-25', ed:'2026-09-05', n:'One cue sheet per presenter.', sm:'Each presenter gets a personal cue sheet.' },
-  { c:'prog', t:'Emcee script — full draft', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', n:'Draft by end Aug.', sm:'Cyril\'s full script drafted end August.' },
-  { c:'prog', t:'Emcee script — RAS review + final lock', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-10', n:'Two passes — revisions, then lock.', sm:'Script locks 10 Sep.' },
+  { c:'eo', t:'16 Jun 10:30am call with Ben — lock quotation + design', o:'James', s:'progress', p:50, sd:'2026-06-16', ed:'2026-06-16', sm:'Tuesday call with Ben Logan. Final ambiguity in the quotation gets resolved before signing.', pb:'Agenda set: lock quotation figures, lock design direction, surface remaining ambiguity\nSpecifically resolve: AI video methodology (RAS to shoot, Blink to send reference)\nSpecifically resolve: wristband programming approach\nSpecifically resolve: PE & SDL endorsement scope\nDocument outcomes via email same day to all co-chairs\nIf anything still open, set fast follow-up before signing' },
 
-  { c:'goh', t:'GOH admin brief (2.5 months prior)', o:'Xianna', s:'progress', p:50, sd:'2026-06-15', ed:'2026-07-01', n:'Sending end June.', sm:'Admin brief sending end June.' },
-  { c:'goh', t:'Three pointers locked', o:'James', s:'done', p:100, sd:'2026-06-01', ed:'2026-06-12', n:'In runsheet and deck.', sm:'GOH themes: food waste & RSA, 30 by 30, sustainability.' },
-  { c:'goh', t:'Recording topics for GOH video shoot', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-15', n:'5 topics: food supply, manpower, rental, hardships, sustainability.', sm:'Five recording topics with GOH.' },
-  { c:'goh', t:'Avoid in banter: BCRS, pig\'s blood', o:'Xianna', s:'done', p:100, sd:'2026-06-12', ed:'2026-06-12', n:'Out of question bank.', sm:'BCRS and pig\'s blood off the table.' },
-  { c:'goh', t:'Lean into: SFA imports, food import policy', o:'Xianna', s:'progress', p:60, sd:'2026-06-12', ed:'2026-06-17', n:'Build SFA angle.', sm:'SFA imports and food import policy are the active angles.' },
-  { c:'goh', t:'GOH dress intel — red + khaki', o:'Xianna', s:'done', p:100, sd:'2026-06-12', ed:'2026-06-12', n:'Brief to floral, photo, lighting.', sm:'Red + khaki — colour cue for floral, lighting, photo.' },
-  { c:'goh', t:'Min Grace Fu arrival protocol with secretariat', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', n:'Direct with Minister office.', sm:'Working with Minister office on arrival protocol.' },
-  { c:'goh', t:'GOH to interact with booths', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', n:'Plan booth tour pre-banter.', sm:'Minister does short booth walk before banter.' },
-  { c:'goh', t:'SNOC clarification — RAS event, not SNOC', o:'Xianna', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-30', n:'Position with Minister office.', sm:'Confirming this is RAS, theme connects sport and F&B grit.' },
-  { c:'goh', t:'Spotlight cue for GOH arrival rehearsal', o:'James', s:'not-started', p:0, sd:'2026-09-15', ed:'2026-09-15', n:'Rehearsal day.', sm:'Spotlight entry rehearsed on the day.' },
-  { c:'goh', t:'GOH/VIPs to block calendars', o:'Xianna', s:'progress', p:50, sd:'2026-06-15', ed:'2026-07-16', n:'Send calendar block requests.', sm:'VIP calendar blocks going out this month.' },
-  { c:'goh', t:'GOH talking points integrated into flow', o:'Xianna', s:'progress', p:40, sd:'2026-06-12', ed:'2026-08-31', n:'Three pointers woven into emcee questions.', sm:'Three pointers sequenced into the runsheet.' },
+  { c:'eo', t:'Blink AI video methodology + reference doc', o:'James + Blink', s:'blocked', p:0, sd:'2026-06-16', ed:'2026-06-18', b:'Needs to be confirmed in writing before signing.', sm:'Direct ask to Blink: confirm in writing that mobile vertical footage from RAS works for their AI post-production. They send a reference doc.', pb:'Direct ask to Blink at the 16 Jun call: if RAS shoots mobile vertical footage, what specifically do you need\nBlink returns one-page reference doc: framing, length, lighting, must-capture moments\nRAS reviews and confirms understanding via email\nReference doc becomes part of the signed contract scope\nUnblocks the AI video chain start' },
 
-  { c:'tables', t:'AI Video — talent availability poll (Wei + Andrew)', o:'James', s:'progress', p:10, sd:'2026-06-15', ed:'2026-06-17', n:'WhatsApp poll: 3 windows each, 1-31 July.', sm:'Polling Wei and Andrew for July filming windows.' },
-  { c:'tables', t:'Ben Logan production runway per video', o:'James', s:'blocked', p:0, sd:'2026-06-15', ed:'2026-06-15', b:'Awaiting Ben\'s answer.', n:'Direct ask today.', sm:'Asked Ben for production runway today.' },
-  { c:'tables', t:'AI Video for Andrew & Wei — production (1 of 2)', o:'Blink Here / Andrew', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-07-31', b:'Talent poll outstanding.', n:'Book filming after confirmation.', sm:'First of two AI integrated videos at S$850.' },
-  { c:'tables', t:'AI Video for Andrew & Wei — production (2 of 2)', o:'Blink Here / Andrew', s:'blocked', p:0, sd:'2026-07-15', ed:'2026-08-15', b:'Talent poll outstanding.', n:'Concept follows first video.', sm:'Second of two AI integrated videos. Total S$1,700.' },
-  { c:'tables', t:'Drive paid table sales — 39 remaining', o:'James', s:'progress', p:50, sd:'2026-04-01', ed:'2026-08-15', n:'Direct re-engagement.', sm:'39 paid tables outstanding.' },
-  { c:'tables', t:'Re-engage 2025 multi-nominators (10 brands)', o:'James + Xianna', s:'progress', p:30, sd:'2026-06-01', ed:'2026-07-31', n:'Pan Pacific, Paradise, TungLok, RWS, Mount Faber, 1-Group, Como, Swensen\'s, Farrer Park, JUMBO.', sm:'Ten 2025 multi-nominator groups being re-engaged.' },
-  { c:'tables', t:'Request RAS MC to buy/sell tables', o:'James', s:'progress', p:60, sd:'2026-06-01', ed:'2026-07-31', n:'Direct WhatsApp ask.', sm:'Each MC member asked personally.' },
-  { c:'tables', t:'eDM blast — AI-enhanced for table sales', o:'Blink Here / Xianna', s:'blocked', p:0, sd:'2026-06-18', ed:'2026-07-15', b:'Cannot start until signed.', n:'Brief Blink. First send end June.', sm:'eDM layout at S$250. First blast end June.' },
-  { c:'tables', t:'WhatsApp blast — less generic, more intriguing', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-07-15', n:'Lead with venue, GOH, three pointers, video tease.', sm:'WhatsApp blasts move from generic to specific.' },
-  { c:'tables', t:'"Fuel for the Fire" 30-second digital sequence', o:'Blink Here', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-07-31', b:'Post signing.', n:'Confirm concept brief.', sm:'30 sec digital sequence at S$1,500.' },
-  { c:'tables', t:'Issue invoices + collect payment (tables)', o:'Vivian', s:'progress', p:50, sd:'2026-05-01', ed:'2026-08-31', n:'Rolling.', sm:'Invoicing rolling through end August.' },
-  { c:'tables', t:'Send invitations (tables + comp)', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-15', n:'Two months prior.', sm:'Invitations posted first half July.' },
+  { c:'eo', t:'Wristband programming logic — Blink to RAS confirmation', o:'James + Blink', s:'blocked', p:30, sd:'2026-06-15', ed:'2026-06-19', b:'Blink currently working on programming logic, owe RAS a response.', sm:'Blink returns their proposed colour and blinking logic. RAS reviews against AAR notes, approves, locks into contract scope.', pb:'Wait for Blink to send their proposed colour and blink logic\nRAS reviews against AAR notes (colour-blind preferences, repeat alert per segment)\nApprove or request adjustments\nFinal logic baked into signed contract scope\nAssign cue controller separately later' },
 
-  { c:'sponsors', t:'Confirmed: CapitaLand S$100k (3 tables)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', n:'Logo + presenter name collected.', sm:'CapitaLand S$100k + 3 tables.' },
-  { c:'sponsors', t:'Confirmed: RSM Singapore S$28k (1 table)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', n:'Logo collected.', sm:'RSM Singapore S$28k + 1 table.' },
-  { c:'sponsors', t:'Confirmed: WSG S$15k (0.5 table)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', n:'Logo collected.', sm:'WSG S$15k + half table.' },
-  { c:'sponsors', t:'Confirmed: Samsung S$12.5k (0.5 table)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', n:'Logo collected.', sm:'Samsung S$12.5k + half table.' },
-  { c:'sponsors', t:'Samsung LED entrance arch — 16 Jun meeting', o:'James + Edwin', s:'progress', p:20, sd:'2026-06-16', ed:'2026-06-30', n:'Ask: 2 sides 6m × 3m + ceiling 6m × 3m + server. Return: arch naming.', sm:'Samsung ask: 2 sides + 1 ceiling + server. Champions arch becomes Samsung LED arch.' },
-  { c:'sponsors', t:'Silverhill ingredient sponsorship — Irish duck (breast + crown)', o:'Xianna', s:'progress', p:30, sd:'2026-06-15', ed:'2026-07-15', n:'Confirm sponsorship terms. Two product lines available.', sm:'Silverhill offering Irish frozen duck breast + duck crown. Confirm sponsorship terms by mid July.' },
-  { c:'sponsors', t:'Blue Current ingredient sponsorship — lamb + Iberico + ASC fish', o:'Xianna', s:'progress', p:30, sd:'2026-06-15', ed:'2026-07-15', n:'Items: Amelia Park 35-day lamb rack, Iberico pork jowl (ICP), Iberico spareribs, ASC Barramundi, ASC Hybrid Grouper, Irish dry-aged short rib.', sm:'Blue Current offering 6 lines: Amelia Park lamb, Iberico pork jowl + spareribs, ASC Barramundi, ASC Grouper, Irish short rib. Confirm by mid July.' },
-  { c:'sponsors', t:'HNDRD — booth stations + free t-shirts', o:'Xianna', s:'blocked', p:30, sd:'2026-06-01', ed:'2026-06-30', b:'Awaiting HNDRD founder reply.', n:'Chase this week.', sm:'HNDRD ask is booth stations and free t-shirts.' },
-  { c:'sponsors', t:'Pernod Ricard / William Grant bar partnership', o:'Xianna', s:'progress', p:40, sd:'2026-06-01', ed:'2026-06-30', n:'Andrew intros made.', sm:'Bar partnership in flight via Andrew\'s intros.' },
-  { c:'sponsors', t:'Unilever — booth/table spend (product only)', o:'Xianna', s:'done', p:100, sd:'2026-05-01', ed:'2026-05-31', n:'Product confirmed.', sm:'Unilever confirmed for booth product spend.' },
-  { c:'sponsors', t:'Kewpie — returning product sponsor', o:'Xianna', s:'done', p:100, sd:'2026-05-01', ed:'2026-05-31', n:'Confirmed.', sm:'Kewpie returning as product sponsor.' },
-  { c:'sponsors', t:'In discussion: Far East, Frasers, Grab', o:'Xianna', s:'progress', p:25, sd:'2026-05-01', ed:'2026-07-31', n:'Active outreach.', sm:'Far East, Frasers and Grab in active discussion.' },
-  { c:'sponsors', t:'In discussion: Freshening, Seafoodco, OpenTable, Lark', o:'Xianna', s:'progress', p:20, sd:'2026-05-01', ed:'2026-07-31', n:'Tier 2.', sm:'Four mid tier conversations in flight.' },
-  { c:'sponsors', t:'In discussion: Carlsberg (beer sponsor)', o:'James', s:'progress', p:50, sd:'2026-06-01', ed:'2026-07-31', n:'Category exclusivity open.', sm:'Carlsberg in discussion for beer category.' },
-  { c:'sponsors', t:'Luzerne (plate sponsor)', o:'Xianna', s:'done', p:100, sd:'2026-02-01', ed:'2026-03-31', n:'Locked.', sm:'Luzerne returning as plate sponsor.' },
-  { c:'sponsors', t:'Goodie bag items collection', o:'Xianna', s:'progress', p:30, sd:'2026-06-01', ed:'2026-08-31', n:'Rolling.', sm:'Goodie bag items collected through end August.' },
-  { c:'sponsors', t:'Sponsor letters for sign off', o:'Xianna', s:'progress', p:50, sd:'2026-02-01', ed:'2026-07-31', n:'Drafted and chasing.', sm:'Sponsor commitment letters drafted; chasing returns.' },
-  { c:'sponsors', t:'Sponsor logos + presenter names', o:'Xianna', s:'progress', p:30, sd:'2026-07-01', ed:'2026-08-15', n:'Collect from each confirmed sponsor.', sm:'Logos and presenter names being collected.' },
-  { c:'sponsors', t:'Sponsor activation integration with EO', o:'Xianna', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', n:'Booth placement, stage moments, mentions.', sm:'Sponsor activations integrated into run sheet.' },
+  { c:'eo', t:'Co-chair alignment — Wei, Andrew, Lamley comfortable', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-19', sm:'Each co-chair walked through the outstanding items and gives a verbal or written signal that they are comfortable to proceed with signing.', pb:'Send outstanding items document to all three co-chairs by Wed 10am\nWalk through document on Wednesday call\nWei: get verbal "comfortable to proceed" signal\nAndrew: get verbal signal\nLamley: get verbal signal\nDocument all three (WhatsApp screenshots fine) before signing' },
 
-  { c:'menu', t:'Chef Lamley meeting — menu curation', o:'James', s:'progress', p:50, sd:'2026-06-16', ed:'2026-06-16', n:'Tuesday. Chef shortlist, tasting options, ingredient match.', sm:'Lamley Tuesday — locking menu direction.' },
-  { c:'menu', t:'Confirm 3rd guest chef for course 3', o:'James + Lamley', s:'blocked', p:0, sd:'2026-06-16', ed:'2026-06-30', b:'Course 3 chef still pending.', n:'Lock at Lamley meeting Tuesday; finalise by end June.', sm:'Course 3 chef is the open gap. Quynh (course 1), Marvas (course 2), TBC (course 3), Greg (course 4), Pierre Herme (dessert).' },
-  { c:'menu', t:'Lock guest chef course pairings (5 courses)', o:'James', s:'progress', p:60, sd:'2026-06-16', ed:'2026-06-30', n:'Quynh of Kamon (Japanese, course 1), Marvas of Qin (Fusion, course 2), TBC (course 3), Greg of Moutarde (French, course 4), Pierre Herme (dessert).', sm:'5 course chef pairings: Quynh (Kamon), Marvas (Qin), TBC, Greg (Moutarde), Pierre Herme. Four of five locked.' },
-  { c:'menu', t:'Brief chefs on Silverhill + Blue Current ingredient list', o:'Xianna', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-06-24', n:'Share 8 available items: duck breast + crown (Silverhill); Amelia Park lamb; Irish short rib; Iberico jowl + spareribs (ICP); ASC Barramundi + Grouper.', sm:'8 ingredients available across Silverhill + Blue Current. Briefing chefs before the 24 Jun meeting so they can plan.' },
-  { c:'menu', t:'Match available ingredients to chefs/courses', o:'James + Lamley', s:'not-started', p:0, sd:'2026-06-24', ed:'2026-07-15', n:'At 24 Jun chefs meeting: each chef picks ingredients aligned to their course.', sm:'Ingredient assignment happens at the 24 June chefs meeting. Each chef picks what fits their course.' },
-  { c:'menu', t:'All gala dinner chefs meeting — 24 Jun at RWS', o:'James', s:'not-started', p:0, sd:'2026-06-24', ed:'2026-06-24', n:'Brief on theme, timing, dietary, ingredient list, course assignments.', sm:'All chefs meet 24 June at RWS.' },
-  { c:'menu', t:'Shortlist chefs (2025 winners preference)', o:'Xianna', s:'progress', p:90, sd:'2026-06-05', ed:'2026-06-30', n:'90% done; Lamley signs off.', sm:'Chef shortlist 90% done; Lamley signs off Tuesday.' },
-  { c:'menu', t:'Curate menu concept (Lamley + Xianna)', o:'Xianna', s:'progress', p:20, sd:'2026-06-15', ed:'2026-07-31', n:'Develop post Lamley meeting.', sm:'Menu concept develops mid June, locks end July.' },
-  { c:'menu', t:'Brief inclusive menu (Halal/Veg)', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-07-31', n:'Halal + vegetarian streams.', sm:'Inclusive menu briefed end July.' },
-  { c:'menu', t:'Tasting menu day — week of 17-21 Aug', o:'James', s:'not-started', p:0, sd:'2026-08-17', ed:'2026-08-21', n:'Confirm specific date with chefs and RWS.', sm:'Tasting menu day in week of 17-21 August.' },
-  { c:'menu', t:'Menu tasting + finalisation', o:'Xianna', s:'not-started', p:0, sd:'2026-08-17', ed:'2026-08-25', n:'Tweaks logged.', sm:'Menu finalises week after tasting day.' },
-  { c:'menu', t:'Wine ordering — 3 vendors', o:'James', s:'progress', p:50, sd:'2026-07-01', ed:'2026-08-15', n:'Three vendor quotes; selecting.', sm:'Three wine vendor quotes in hand.' },
-  { c:'menu', t:'Beer sponsor approach', o:'James', s:'progress', p:50, sd:'2026-06-01', ed:'2026-07-31', n:'Carlsberg in discussion.', sm:'Beer sponsor discussions live — Carlsberg primary.' },
-  { c:'menu', t:'Half-Time Show — 3 chef interview clips', o:'Blink Here', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-15', n:'Scripts + 6hr production. S$4,000.', sm:'Half-Time Show is 3 chef interview clips at S$4,000.' },
-  { c:'menu', t:'Tablecloth colour confirmation', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', n:'Arena palette.', sm:'Tablecloth colour confirmed with venue.' },
-  { c:'menu', t:'Brief group stage moment for chefs', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', n:'Build into emcee script.', sm:'Short chefs on stage recognition moment.' },
-  { c:'menu', t:'Notify venue of alcohol delivery', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-10', n:'RWS notice 5 working days prior.', sm:'Alcohol delivery notice first week September.' },
-  { c:'menu', t:'Identify menu issues + tweak', o:'Xianna', s:'not-started', p:0, sd:'2026-08-22', ed:'2026-08-31', n:'Post tasting day adjustments.', sm:'Menu tweaks logged after tasting day.' },
+  { c:'eo', t:'Sign Blink Here Events contract (S$34,600)', o:'James', s:'blocked', p:30, sd:'2026-06-19', ed:'2026-06-19', b:'5 prerequisites: outstanding items doc, 16 Jun Ben call, Blink AI video methodology, wristband logic, co-chair alignment.', sm:'The signing event itself. Lands once the five prerequisite tasks above are all green. Quotation S$34,600, down S$5,400 from S$40,000.', pb:'Confirm all five prerequisites have turned green\nJames signs contract\nBlink countersigns\nFirst deliverables begin: backdrop visual and EDM production starts the next day\n50% deposit invoice to Vivian for payment within agreed terms' },
 
-  { c:'mc', t:'23rd term MC swearing in — 19:45 ceremony', o:'James', s:'progress', p:30, sd:'2026-06-01', ed:'2026-09-16', n:'Locked at 19:45.', sm:'New 23rd term MC sworn in at 19:45, 10 minutes.' },
-  { c:'mc', t:'Appointment certificate design and print', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', n:'Design, print, frame.', sm:'Certificates designed and printed end August, framed.' },
-  { c:'mc', t:'LED wall content — MC names + portfolios', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', n:'Photos, names, portfolio lines.', sm:'LED wall runs each MC member during swearing in.' },
-  { c:'mc', t:'MC animated intro concept (Gladiator-style)', o:'Andrew (lead)', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-31', n:'Andrew leads. Capture at retreat.', sm:'MC intros as animated character videos.' },
-  { c:'mc', t:'Capture MC motion clips at retreat', o:'Andrew', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-31', n:'Mobile footage.', sm:'Motion clips captured at next retreat.' },
-  { c:'mc', t:'Sample reference video for MC intro concept', o:'Andrew', s:'not-started', p:0, sd:'2026-06-30', ed:'2026-07-15', n:'Andrew sends reference.', sm:'Andrew sending sample reference.' },
-  { c:'mc', t:'MC roving camera at entrance', o:'Blink Here', s:'not-started', p:0, sd:'2026-09-15', ed:'2026-09-16', n:'Capture excerpts during arrivals.', sm:'Roving camera catches each MC at entrance.' },
-  { c:'mc', t:'MC admin brief', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-02', n:'Two weeks prior.', sm:'MC admin brief two weeks before.' },
-  { c:'mc', t:'Show MCs a preview of the event', o:'James', s:'blocked', p:0, sd:'2026-06-25', ed:'2026-07-15', b:'Cannot show until Blink delivers backdrop + EDM.', n:'Tee up 5 min preview once deliverables land.', sm:'MC preview tees up once backdrop + EDM produced.' },
-  { c:'mc', t:'Request RAS MC to buy/sell tables', o:'James', s:'progress', p:60, sd:'2026-06-01', ed:'2026-07-31', n:'Direct ask each member.', sm:'MC members personally asked.' },
+  { c:'eo', t:'PE & SDL Endorsement (S$2,200) — statutory compliance', o:'James + Blink', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-07-15', sm:'Professional Engineer and Structural endorsement for the LED installations. Non-negotiable now that LED arch + wristbands + LED wall are all in scope.', pb:'Confirm in contract scope: Blink coordinates the PE and SDL endorsement\nBlink engages licensed PE for structural sign-off on LED arch, LED wall, ceiling installation\nDocumentation issued to RWS engineering as proof of compliance\nCertificate stored in event paperwork before bump-in' },
 
-  { c:'vip', t:'Send VIP invitations', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-15', n:'Two months prior.', sm:'VIP invitations posted first half July.' },
-  { c:'vip', t:'Send sponsor invitations + RSVP tracking', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-15', n:'Two months prior.', sm:'Sponsor invitations posted first half July.' },
-  { c:'vip', t:'VVIP seating + parking allocation', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-12', n:'Tables 1-5 closest.', sm:'VVIPs seated tables 1-5; parking reserved.' },
-  { c:'vip', t:'Print + place VVIP/VIP name tents', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-16', n:'Day of.', sm:'Name tents printed and placed morning of show.' },
-  { c:'vip', t:'Prepare parking coupons', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-16', n:'Day of.', sm:'Parking coupons prepped morning of show.' },
-  { c:'vip', t:'VIP welcome experience design', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', n:'Welcome flow.', sm:'VIP welcome flow designed.' },
-  { c:'vip', t:'Telegram broadcast channel for nominees', o:'Xianna', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', n:'Numbers private, one-way.', sm:'Nominee comms via Telegram broadcast.' },
+  { c:'eo', t:'LED entrance tunnel — production (Samsung sponsored)', o:'James + Blink', s:'blocked', p:5, sd:'2026-06-16', ed:'2026-08-15', b:'Samsung sponsorship confirmation outstanding (Tue 16 Jun meeting).', sm:'Champions entrance tunnel evolves into Samsung LED tunnel. Spec: 2 sides 6m × 3m + ceiling 6m × 3m + server + processor.', pb:'Samsung confirms tunnel sponsorship at 16 Jun meeting\nSamsung returns formal letter within one week\nBrief Ben on integration spec, rigging, content cycle\nSchedule install date with Samsung tech team and RWS\nContent cycle designed (committee images, sustainability messages, sponsor reels)\nIf Samsung declines, fallback to balloon arch (no further escalation needed)' },
 
-  { c:'seat', t:'Digital table map (replaces registration booth)', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', n:'Email pre event; QR at venue.', sm:'Table map digital, QR at venue.' },
-  { c:'seat', t:'Physical backup seating plan at venue', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', n:'Large printed plan from RWS.', sm:'One large printed seating plan at venue.' },
-  { c:'seat', t:'Confirm RWS reception setup + server count', o:'James', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-07-15', n:'Direct ask RWS.', sm:'Checking RWS on reception + servers.' },
-  { c:'seat', t:'Collate guest RSVPs', o:'James', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', n:'Rolling.', sm:'RSVPs collated July-August.' },
-  { c:'seat', t:'Collate dietary requirements', o:'James', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-09-05', n:'Dietary form with RSVP.', sm:'Dietary needs collected with each RSVP.' },
-  { c:'seat', t:'Send final dietary to venue', o:'James', s:'not-started', p:0, sd:'2026-09-08', ed:'2026-09-10', n:'Locked 6 days prior.', sm:'Final dietary to RWS kitchen 10 September.' },
-  { c:'seat', t:'Finalise seating arrangements', o:'James', s:'not-started', p:0, sd:'2026-08-25', ed:'2026-09-10', n:'Adjacencies, MC tables, VVIP front, dietary.', sm:'Seating finalises late August through 10 Sep.' },
-  { c:'seat', t:'Send table numbers + reminders', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-14', n:'Two weeks prior.', sm:'Table numbers + reminders sent two weeks out.' },
+  { c:'eo', t:'Award reveal mechanic — final call', o:'James', s:'progress', p:60, sd:'2026-06-10', ed:'2026-06-30', sm:'Spotlight + LED reveal is the leading option. Locks after signing.', pb:'Two options on the table: spotlight + LED reveal, or screen-only reveal\nConfirm with Blink which is technically cleaner once signed\nBuild reveal sequence into emcee script\nRehearse on tech day' },
 
-  { c:'loc', t:'Venue contract — RWS', o:'James', s:'done', p:100, sd:'2025-11-15', ed:'2026-01-31', n:'Signed.', sm:'RWS Ballroom signed and locked.' },
-  { c:'loc', t:'Site recce — initial', o:'James', s:'done', p:100, sd:'2025-12-01', ed:'2025-12-15', n:'Done.', sm:'Initial recce done in December.' },
-  { c:'loc', t:'Site recce — co-chairs walkthrough (12 Jun)', o:'James', s:'done', p:100, sd:'2026-06-12', ed:'2026-06-12', n:'Done.', sm:'Co-chairs walked the room on 12 June.' },
-  { c:'loc', t:'Joint site recce — Blink + RWS + RAS', o:'James', s:'blocked', p:0, sd:'2026-06-18', ed:'2026-06-30', b:'Cannot schedule until Blink signs.', n:'Schedule after signing.', sm:'Triple recce planned second half June.' },
-  { c:'loc', t:'Confirm RWS stage dimensions + load-in route', o:'James', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-06-30', n:'Cross check Blink plan.', sm:'Stage dims and load in route confirmed at triple recce.' },
-  { c:'loc', t:'Confirm screen ratios (LED + side screens)', o:'James', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-07-15', b:'Awaiting Ben.', n:'Same ask as EO.', sm:'Screen ratios locking with Ben mid July.' },
-  { c:'loc', t:'Power, rigging, structural sign off (PE & SDL)', o:'James', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', n:'Sign off RWS engineering. PE & SDL S$2,200.', sm:'Structural sign off coordinated with PE & SDL.' },
-  { c:'loc', t:'Plotters\' floor plan signed off', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', n:'Signed by Blink, RWS, RAS.', sm:'Floor plan signed end August.' },
-  { c:'loc', t:'Bump-in schedule confirmed', o:'James', s:'not-started', p:0, sd:'2026-09-10', ed:'2026-09-15', n:'Load in timings.', sm:'Bump in confirmed week before event.' },
-  { c:'loc', t:'Tech rehearsal slot confirmed', o:'James', s:'not-started', p:0, sd:'2026-09-10', ed:'2026-09-15', n:'Day before show.', sm:'Tech rehearsal 15 September.' },
-  { c:'loc', t:'Confirm packing room location', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-15', n:'RWS to confirm.', sm:'Packing room confirmed first half September.' },
+  { c:'eo', t:'LED screen ratios + side screen feeds', o:'James + Ben', s:'blocked', p:15, sd:'2026-06-15', ed:'2026-06-25', b:'Awaiting Ben on RWS spec confirmation.', sm:'Need final LED screen ratios from Ben, dependent on RWS specs.', pb:'Email Ben for screen ratios and side feed plan\nBen confirms based on RWS technical pack\nShare with Blink design team for backdrop and content sizing\nFinal sizes baked into all video and visual deliverables' },
 
-  { c:'misc', t:'E-magazine ownership — assign RAS owner', o:'James', s:'blocked', p:0, sd:'2026-06-15', ed:'2026-06-30', b:'No internal owner assigned.', n:'Decide: Xianna, Carin, or external.', sm:'E-magazine taken back from Blink. Picking owner.' },
-  { c:'misc', t:'Brochure decision — in scope or drop', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-30', n:'In scope, in-house, or skip.', sm:'Brochure decision pending.' },
-  { c:'misc', t:'Outstanding chain dining credit letters', o:'James', s:'progress', p:60, sd:'2026-05-15', ed:'2026-06-30', n:'WILDSEED, GUZMAN Y GOMEZ, HAKKA YU, PUTIEN.', sm:'Four chain credit letters outstanding.' },
-  { c:'misc', t:'Cross-check formatted chain outlet strings (5)', o:'James', s:'progress', p:50, sd:'2026-05-15', ed:'2026-06-30', n:'CEDELE, DIAN XIAO ER, SWENSEN\'S, CASA VOSTRA, TIM HO WAN.', sm:'Five chain strings being cross checked.' },
-  { c:'misc', t:'Reusable Launch Pedestal design', o:'Blink Here', s:'not-started', p:0, sd:'2026-06-18', ed:'2026-07-15', n:'Send RAS logo. Year on year reuse.', sm:'Launch Pedestal designed for yearly reuse.' },
-  { c:'misc', t:'Nominee briefing pack', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', n:'Two weeks prior.', sm:'Nominees get briefing pack two weeks out.' },
-  { c:'misc', t:'Hot wash debrief — 15 mins after show', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-16', n:'15 mins post show.', sm:'15 minute hot wash with Blink.' },
-  { c:'misc', t:'Joint AAR with Blink within 2 weeks', o:'James', s:'not-started', p:0, sd:'2026-09-17', ed:'2026-09-30', n:'AAR by 30 Sep.', sm:'Full AAR within two weeks of show.' },
-  { c:'misc', t:'Post-event highlight reel', o:'Blink Here', s:'not-started', p:0, sd:'2026-09-17', ed:'2026-09-30', n:'Cut by Blink.', sm:'Highlight reel within two weeks.' },
-  { c:'misc', t:'Post-event social media', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-30', n:'Recap across all channels.', sm:'Post event social runs two weeks.' }
+  { c:'eo', t:'Crew headcount + named on-site command', o:'James + Blink', s:'blocked', p:10, sd:'2026-06-15', ed:'2026-06-30', b:'Pending Blink to assign stage manager, FOH, BOH.', sm:'Blink names the stage manager, FOH and BOH leads before signature. RAS knows who to talk to on the night.', pb:'Request named individuals in contract addendum\nBlink confirms: Stage Manager, FOH Lead, BOH Lead, AV Lead\nNames go into the contract addendum\nIntroductions made before tech rehearsal day' },
+
+  { c:'eo', t:'Payment milestones (50% deposit + 14 day balance)', o:'James + Vivian', s:'progress', p:50, sd:'2026-06-19', ed:'2026-10-01', sm:'New quotation tightens balance window from 30 to 14 days. Flag to Vivian for cashflow.', pb:'50% deposit invoiced by Blink on signing\nVivian arranges payment from RAS account\nBalance invoice issued by Blink within 5 working days of event\nVivian settles within 14 days of completion' },
+
+  { c:'eo', t:'IP ownership of creative assets', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-19', sm:'IP ownership clause added to Blink contract before signing — RAS owns all assets post event.', pb:'Draft IP clause: RAS owns all creative deliverables (backdrop, EDM, videos, photos) in perpetuity\nBlink retains right to use in their own portfolio with credit\nClause added to contract draft\nSigned at point of signature' },
+
+  { c:'eo', t:'Backdrop visual + EDM (first post-signing deliverables)', o:'Blink Here / Xianna', s:'blocked', p:0, sd:'2026-06-20', ed:'2026-06-30', b:'Cannot start until contract signed.', sm:'Backdrop and EDM are Blink first deliverables. Production begins the day after signing.', pb:'Brief Blink on RAS brand assets and Arena of Champions theme immediately on signing\nBlink delivers backdrop visual draft within 5 working days\nRAS reviews (James + Xianna), one round of revisions\nLocked backdrop becomes EDM source asset\nEDM draft follows within further 5 days' },
+
+  { c:'eo', t:'AI animated character video — MC intros (Gladiator style)', o:'Andrew (lead)', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-31', sm:'Animated character intros for MC swearing in. Andrew leads. Mobile footage from each MC, AI face overlay.', pb:'Andrew sends sample reference video to RAS for sign-off\nRAS approves concept\nCapture mobile motion clips from each MC member at next retreat\nAndrew works with editor on AI overlay treatment\nFirst cut shared with each MC member for personal approval\nFinal cuts ready for LED wall during swearing in ceremony' },
+
+  { c:'eo', t:'Send RAS logo for Launch Pedestal design', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-18', sm:'Launch Pedestal lighted flame design needs RAS logo this week. Reusable yearly going forward.', pb:'Find latest high-resolution RAS logo (vector preferred)\nEmail Ben with logo file and brief: reusable yearly, modular design\nBen returns Pedestal design draft\nRAS approves\nPedestal becomes a year-on-year asset' },
+
+  { c:'eo', t:'GOH live feed during arrival', o:'Blink Here', s:'not-started', p:0, sd:'2026-09-15', ed:'2026-09-16', sm:'Live camera feed of Minister arrival to the LED wall. Rehearsed on the day.', pb:'Confirm with Blink: roving camera operator dedicated to GOH arrival\nLive feed routed to main LED wall\nSpotlight cue triggers as Minister walks in\nDim room, single beam follows Minister to seat\nRehearsed at tech day on 15 Sep' },
+
+  { c:'eo', t:'Wristband logic — assign cue controller (160 pcs)', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', sm:'160 LED wristbands now in scope, full hall coverage. One person controls cues — colour for standby, blinking for imminent call-up.', pb:'Wristband programming logic locked with Blink (separate task)\nXianna designated as cue controller\nXianna trained on the controller hardware by Blink\nCue sheet built per award category — when colour changes, when blinking starts\nDry run during tech rehearsal\nXianna runs cues live on the night' },
+
+  { c:'eo', t:'Signature sound cue design', o:'James + Blink', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', sm:'One signature sound cue, same one every year going forward. Brief Blink to design.', pb:'Brief Blink: single reusable sound cue for award reveals and attention moments\nReference inspirations sent to Blink (3-5 examples)\nBlink delivers 3 candidate cues\nRAS picks one with co-chair input\nLocked as the Epicurean signature sound from 2026 onwards' },
+
+  { c:'eo', t:'AAR fixes brief to Blink (5 items)', o:'James + Blink', s:'progress', p:40, sd:'2026-06-01', ed:'2026-06-30', sm:'Five AAR fixes from prior event being briefed into Blink production planning.', pb:'Item 1: dessert sync — confirm timing with kitchen and AV\nItem 2: photo marshal — named role with cue sheet\nItem 3: embargo discipline — briefed at 17:00 huddle\nItem 4: foyer movement — choreographed transition from reception to ballroom\nItem 5: emcee walkthrough — full rehearsal with Cyril on tech day' },
+
+  { c:'eo', t:'Joint site recce — Blink + RWS + RAS', o:'James', s:'blocked', p:0, sd:'2026-06-20', ed:'2026-06-30', b:'Cannot schedule until Blink signs.', sm:'Triple recce booked once Blink signs — walk every cue point with venue.', pb:'Schedule meeting after Blink signing\nWalk through: load-in route, stage, AV positions, sponsor activations, GOH path\nConfirm power, rigging, structural requirements\nDocument any RWS constraints\nFloor plan iteration begins after recce' },
+
+  { c:'eo', t:'2027 teaser video — post-event deliverable', o:'James + Blink', s:'progress', p:50, sd:'2026-06-10', ed:'2026-09-30', sm:'2027 teaser cut from show footage post event. S$900 line item in the quotation.', pb:'Confirmed: Blink cuts teaser from 16 Sep show footage\nIncluded at S$900 in current quotation\nBrief Blink on teaser concept after signing\nDelivered within 2 weeks of event for 2027 announcement' },
+
+  { c:'eo', t:'Cancellation / liability / insurance clauses', o:'James', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-19', sm:'Cancellation charge unchanged at 75% on confirmation. One final push to tier before signing.', pb:'Push Blink for tiered cancellation: 25% within 30 days, 50% within 14 days, 75% within 7 days\nIf Blink refuses, sign at current 75% on confirmation\nConfirm liability cap and insurance coverage in contract\nReview indemnity clauses' },
+
+  { c:'eo', t:'Animated backdrop (no extra charge)', o:'Blink Here', s:'blocked', p:0, sd:'2026-06-20', ed:'2026-07-15', b:'Starts post-signing.', sm:'Backdrop animated at no extra charge. Confirming in writing as part of contract.', pb:'Confirm in writing: backdrop animation included at no additional cost\nClause added to contract before signing\nAnimation brief shared with Blink design team\nFirst animation draft within 10 working days of signing' },
+
+  { c:'eo', t:'Confirm RWS stage dimensions + load-in route', o:'James', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-06-30', sm:'Stage dimensions and load-in route locking after joint recce end June.', pb:'Pull stage dimensions and load-in route from RWS technical pack\nCross check with Blink rigging plan during joint recce\nConfirm vehicle access times and lift availability\nDocumented and shared with Blink ops' },
+
+  // ===== PROGRAMME RUNDOWN =====
+  { c:'prog', t:'Full programme rundown — Wednesday deliverable', o:'James', s:'progress', p:60, sd:'2026-06-15', ed:'2026-06-17', sm:'Full rundown lands Wed 10am — spine, banter, swearing in, recognition, close.', pb:'Compile spine: 17:00 reg → 22:30 close\nLayer GOH banter at 19:10–19:30\nLayer 23rd MC swearing in at 19:45\nLayer recognition sequence (chefs, co-chairs, Blink)\nLayer closing sequence with song cue\nCirculate to co-chairs Wed 10am for walkthrough' },
+
+  { c:'prog', t:'Spine locked: 17:00 reg → 22:30 close', o:'James', s:'done', p:100, sd:'2026-06-10', ed:'2026-06-15', sm:'Night spine: 17:00 reg, 18:30 doors, 19:00 GOH, 19:45 swearing in, 20:00 dinner + R1, 21:10 R2, 22:30 close.', pb:'Spine locked into runsheet\nShared with Blink for production planning\nNo further changes without co-chair sign-off' },
+
+  { c:'prog', t:'19:32 gap content — decision needed', o:'James', s:'blocked', p:0, sd:'2026-06-15', ed:'2026-06-17', b:'13 minute slot between fireside wrap and swearing in unassigned.', sm:'13 minutes to fill — leaning to President address. Locks by Wed.', pb:'Three options: President address, sustainability video, sponsor reel\nDiscuss at Wednesday call with co-chairs\nIf President address: brief Ben Boh on content and length\nIf sustainability video: brief Blink to produce\nIf sponsor reel: brief Xianna on content collection\nLock by end of Wednesday call' },
+
+  { c:'prog', t:'Pre-engineered Q&A bank for GOH banter', o:'Xianna', s:'progress', p:40, sd:'2026-06-10', ed:'2026-06-17', sm:'Questions pre-engineered, shared with GOH office. No surprises on stage.', pb:'Draft 3 questions per pointer (food waste, 30 by 30, sustainability)\nLean into: SFA imports, food import policy\nAvoid: BCRS, pig\'s blood\nShare with Minister office for pre-approval\nLock locked questions for emcee script' },
+
+  { c:'prog', t:'Recognition sequence: Chefs, Co-chairs, Events Co', o:'James', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', sm:'Recognition order: chefs first, co-chairs second, Blink third.', pb:'Build into emcee script\nChefs on stage moment built in (Lamley\'s ask)\nCo-chairs called up briefly\nBlink team acknowledged at end\nTimings allocated in runsheet' },
+
+  { c:'prog', t:'Cyril shout-out for finalists', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', sm:'Emcee calls finalists to stand and be recognised before reveals.', pb:'Add to emcee script — finalists by category stand on call\nLighting cue to brighten room briefly\nApplause moment\nThen wristband cue triggers for winner announcement' },
+
+  { c:'prog', t:'Closing song selection (ABBA candidate)', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', sm:'Closing song shortlisted, ABBA "Winner Takes It All" front runner.', pb:'Confirm rights and licensing fee for "Winner Takes It All"\nIf licensing too expensive, shortlist 2 alternatives\nFinal selection mid July\nAudio file delivered to Blink for show file' },
+
+  { c:'prog', t:'Wristband briefing in emcee housekeeping', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', sm:'Wristband colours explained in housekeeping at top of night by Cyril.', pb:'Draft 30-second wristband briefing copy\nIntegrate into emcee housekeeping script\nCyril briefs guests at top of evening — what colours mean what\nReinforced again before each award segment' },
+
+  { c:'prog', t:'Embargo briefing protocol (SFA + presenters)', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-15', sm:'Embargo discipline rehearsed at the 17:00 briefing.', pb:'Brief drafted: no winner reveals before announcement\nDistributed to SFA presenters in advance\nIn-person briefing at 17:00 huddle on event day\nSigned acknowledgement from each presenter' },
+
+  { c:'prog', t:'Lock category award sequence (26 cats)', o:'James', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-15', sm:'26 award categories sequenced by tempo, builds to People\'s Choice at the back end.', pb:'Group categories by tempo and theme\nDesign crescendo to People\'s Choice award\nConfirm sponsor adjacencies (sponsor presents their category)\nLocked sequence shared with Blink for show file' },
+
+  { c:'prog', t:'Confirm presenter pairings per category', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', sm:'Presenters paired one per category, sponsors aligned to relevant awards.', pb:'List sponsors confirmed by mid August\nPair sponsors to categories where the brand fit makes sense\nFill remaining slots with co-chairs and senior committee\nDocument pairings; confirm presenters by email\nBuild presenter cue sheets next' },
+
+  { c:'prog', t:'Build presenter cue sheets', o:'James', s:'not-started', p:0, sd:'2026-08-25', ed:'2026-09-05', sm:'Each presenter gets a personal cue sheet — walk on, line, walk off.', pb:'Template designed: walk-on cue, opening line, award presentation line, exit cue\nOne cue sheet per presenter\nDistributed via email 2 weeks before event\nReprinted and handed out at 17:00 huddle\nRehearsal walkthrough with presenters who arrive early' },
+
+  { c:'prog', t:'Emcee script — full draft', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', sm:'Cyril\'s full script drafted end August.', pb:'Draft full script: housekeeping, banter intro, GOH segment, recognition sequence, award reveals, closing\nShare with Cyril for first read\nIncorporate Cyril\'s feedback\nReady for RAS review first week September' },
+
+  { c:'prog', t:'Emcee script — RAS review + final lock', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-10', sm:'Script locks 10 Sep, six days before show. No further changes.', pb:'James reviews full draft\nCo-chairs review\nFinal revisions integrated\nLocked version sent to Cyril 10 September\nNo further changes without James sign-off' },
+
+  // ===== GUEST OF HONOUR =====
+  { c:'goh', t:'GOH admin brief — send to Minister staffers end June', o:'Xianna', s:'progress', p:40, sd:'2026-06-15', ed:'2026-07-01', sm:'Admin brief covers programme, parking, seating, booth tour, banter. Goes to Minister staffers end June.', pb:'Draft brief covering: programme rundown, Minister involvement, VIP parking, VIP seating, table host info, welcoming party, booth tour list, pre-engineered banter questions\nShare draft with co-chairs (Wei, Andrew, Lamley) for review\nIncorporate feedback\nSend to Minister staffers end June\nStaffers may request revisions or clarity\nStaffers pass to Minister; confirmation comes back' },
+
+  { c:'goh', t:'Three pointers locked', o:'James', s:'done', p:100, sd:'2026-06-01', ed:'2026-06-12', sm:'GOH themes locked: food waste & RSA, 30 by 30 + local sourcing, sustainability as competitive edge.', pb:'Three themes confirmed in runsheet and deck\nQuestions built around each pointer\nSequenced 19:15, 19:20, 19:25 in banter segment' },
+
+  { c:'goh', t:'Avoid in banter: BCRS, pig\'s blood', o:'Xianna', s:'done', p:100, sd:'2026-06-12', ed:'2026-06-12', sm:'BCRS and pig\'s blood off the table for banter — confirmed at recce.', pb:'Out of question bank\nAll script writers briefed' },
+
+  { c:'goh', t:'Lean into: SFA imports, food import policy', o:'Xianna', s:'progress', p:60, sd:'2026-06-12', ed:'2026-06-17', sm:'SFA imports and food import policy are the active angles.', pb:'Build SFA angle into question bank\nShare with Minister office for sense-check\nLocked into banter script' },
+
+  { c:'goh', t:'GOH dress intel — red palette, khaki pants', o:'Xianna', s:'done', p:100, sd:'2026-06-12', ed:'2026-06-12', sm:'Minister office indicates red + khaki — colour cue for floral, lighting, photo.', pb:'Confirmed at recce\nBriefed to floral team\nBriefed to photography team\nBriefed to lighting team' },
+
+  { c:'goh', t:'Min Grace Fu arrival protocol with secretariat', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', sm:'Working with Minister office on arrival protocol — welcome party, walk path, holding area.', pb:'Initial contact with Minister office post admin brief acknowledgement\nConfirm welcome party composition (President, co-chairs, James)\nLock walk path through booth area\nConfirm holding area before banter\nRehearse with Minister office representative if possible' },
+
+  { c:'goh', t:'GOH to interact with booths', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', sm:'Minister does short booth walk before banter — sponsor faces, photo moments.', pb:'Confirm booth participants 2 weeks out\nWalk path mapped between key sponsor booths\nPhoto marshal briefed for each booth stop\nTiming: max 8 minutes from arrival to seated for banter' },
+
+  { c:'goh', t:'SNOC clarification — RAS event, not SNOC', o:'Xianna', s:'not-started', p:0, sd:'2026-06-15', ed:'2026-06-30', sm:'Confirming this is RAS, theme connects sport and F&B grit.', pb:'Position for Minister office: this is the RAS Epicurean Star Award\nTheme connects sport (champions) and F&B (grit, hardships, sustainability)\nNot a SNOC event\nClarification in cover note when brief is sent' },
+
+  { c:'goh', t:'GOH/VIPs to block calendars', o:'Xianna', s:'progress', p:50, sd:'2026-06-15', ed:'2026-07-16', sm:'VIP calendar blocks going out this month; back by mid July.', pb:'List of GOH and all VIPs compiled\nCalendar block request sent to each\nFollow up after 10 working days\nConfirmation tracked in spreadsheet' },
+
+  { c:'goh', t:'GOH talking points integrated into flow', o:'Xianna', s:'progress', p:40, sd:'2026-06-12', ed:'2026-08-31', sm:'Three pointers sequenced into the runsheet — food waste first, 30 by 30 middle, sustainability close.', pb:'Three pointers woven into emcee banter questions\nSequenced 19:15 (food waste), 19:20 (30 by 30), 19:25 (sustainability)\nFinal versions in emcee script' },
+
+  // ===== TABLE SALES =====
+  { c:'tables', t:'AI Video for Andrew & Wei — talent availability poll', o:'James', s:'progress', p:10, sd:'2026-06-19', ed:'2026-06-23', sm:'Polling Wei and Andrew for July filming windows. Mobile vertical shot, RAS shoots.', pb:'Wait for Blink AI video methodology + reference doc (post-signing)\nJames drafts shot list from Blink reference\nWhatsApp Wei and Andrew with 3 candidate filming windows in July\nWei and Andrew confirm shared availability\nLock filming date for first video' },
+
+  { c:'tables', t:'AI Video for Andrew & Wei — production (1 of 2, July)', o:'James + Carin', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-07-15', b:'Talent poll outstanding; Blink reference doc outstanding.', sm:'First of two AI videos. Mobile vertical, James or Carin shoots. Blink does AI post-production. Goes live first week of July.', pb:'Send shot brief to Wei and Andrew one day prior\nFilming day — James or Carin shoots on mobile (vertical), captures all required shots\nSend raw footage to Blink (Carin)\nBlink does AI post-production overlay, delivers first cut within 5 working days\nRAS reviews (James + Andrew), requests changes\nFinal cut locked, released first week of July' },
+
+  { c:'tables', t:'AI Video for Andrew & Wei — production (2 of 2, August)', o:'James + Carin', s:'blocked', p:0, sd:'2026-07-25', ed:'2026-08-15', b:'Sequence after video 1.', sm:'Second of two AI videos. Same talent, different message. Goes live early August.', pb:'Concept follows video 1 — same talent, complementary message\nBlink confirms shot requirements for video 2\nWei and Andrew availability for second shoot\nFilming day — James or Carin shoots on mobile (vertical)\nRaw footage to Blink, AI post-production, first cut\nRAS reviews, locks final\nReleased first week August' },
+
+  { c:'tables', t:'Filler video 1 of 2 (RAS Intern, between Blink videos)', o:'RAS Intern', s:'not-started', p:0, sd:'2026-07-10', ed:'2026-07-25', sm:'In-house filler video between Blink videos 1 and 2. Intern produces.', pb:'Intern briefed on content angle (complementary to Blink hype videos)\nIntern produces video in-house\nJames + Xianna review\nReleased between Blink video 1 (early July) and Blink video 2 (early August)' },
+
+  { c:'tables', t:'Filler video 2 of 2 (RAS Intern, after Blink videos)', o:'RAS Intern', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', sm:'Final in-house filler running into the event. Intern produces.', pb:'Intern briefed on event hype content\nIntern produces final filler video\nJames + Xianna review\nReleased late August running into event week' },
+
+  { c:'tables', t:'Ben Logan production runway per video', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-19', sm:'Ben\'s post-production turnaround locked at the 16 Jun call. Drives how late filming can happen.', pb:'Confirm at 16 Jun call: per-video post-production runway from Blink\nLock turnaround: target 5 working days from footage to first cut\nDocumented as part of contract scope' },
+
+  { c:'tables', t:'Drive paid table sales — 39 remaining', o:'James + Xianna', s:'progress', p:50, sd:'2026-04-01', ed:'2026-08-15', sm:'39 paid tables outstanding. eDM static, WhatsApp embeds the video. Personal outreach to ten 2025 brands. Verbal commitment is enough.', pb:'eDM blast (static) sent to full database\nWhatsApp blast with hype video embedded — sent to cold leads + RAS members\nPersonal outreach to 10 priority 2025 multi-nominators (Pan Pacific, Paradise, TungLok, RWS, Mount Faber, 1-Group, Como, Swensen\'s, Farrer Park, JUMBO)\nEach MC member personally asked to take or move one table\nVerbal agreement triggers Vivian to invoice\nTarget: full house by mid August' },
+
+  { c:'tables', t:'Re-engage 2025 multi-nominators (10 brands)', o:'James + Xianna', s:'progress', p:30, sd:'2026-06-01', ed:'2026-07-31', sm:'Ten 2025 multi-nominator groups being re-engaged.', pb:'Pan Pacific, Paradise, TungLok, RWS, Mount Faber, 1-Group, Como, Swensen\'s, Farrer Park, JUMBO\nPersonal call or WhatsApp from James or Xianna\nShare hype video as ice-breaker\nClose target end July\nLog responses for follow-up' },
+
+  { c:'tables', t:'Request RAS MC to buy/sell tables', o:'James', s:'progress', p:60, sd:'2026-06-01', ed:'2026-07-31', sm:'Each MC member asked personally to take or move one table.', pb:'Direct WhatsApp ask to each MC member individually\nShare hype video as the supporting collateral\nAsk for either: buy one table, or commit to selling one to their network\nLog commitments\nFollow up at MC meetings' },
+
+  { c:'tables', t:'eDM blast — static, full database', o:'Blink Here / Xianna', s:'blocked', p:0, sd:'2026-06-20', ed:'2026-07-15', b:'Cannot start until Blink signed.', sm:'eDM layout at S$250 in quotation. First blast end June.', pb:'Brief Blink on eDM copy and design\nBlink delivers eDM layout for approval\nRAS approves\nSent to full database first half July' },
+
+  { c:'tables', t:'WhatsApp blast — embed video, less generic', o:'James + Xianna', s:'progress', p:30, sd:'2026-06-19', ed:'2026-07-15', sm:'WhatsApp embeds the AI video. Sent to cold leads and RAS members. Less generic, more intriguing.', pb:'Wait for AI video 1 to be final\nDraft WhatsApp message — lead with video, GOH, the three pointers, dinner date\nSend to cold leads list (segmented)\nSend to RAS members list\nResponses logged for follow-up' },
+
+  { c:'tables', t:'"Fuel for the Fire" 30-second digital sequence', o:'Blink Here', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-07-31', b:'Production post signing.', sm:'30 second digital sequence at S$1,500 in quotation. Pre-event hype piece.', pb:'Brief Blink on concept post signing\nBlink produces 30 second sequence\nRAS reviews\nReleased mid July as social hype' },
+
+  { c:'tables', t:'Issue invoices + collect payment (tables)', o:'Vivian', s:'progress', p:50, sd:'2026-05-01', ed:'2026-08-31', sm:'Invoicing rolling; Vivian collects payments through to end August.', pb:'Verbal commitment from table buyer triggers invoice\nVivian issues invoice within 5 working days\nPayment terms 14 days\nFollow up on overdue\nFull collection by end August' },
+
+  { c:'tables', t:'Send invitations (tables + comp)', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-15', sm:'Invitations posted first half July, two months before the event.', pb:'Invitation design finalised\nPrint and mail-merge\nPosted to all paid table buyers + comped guests\nDigital version sent in parallel\nRSVP form linked' },
+
+  // ===== SPONSORSHIP =====
+  { c:'sponsors', t:'Confirmed: CapitaLand S$100k (3 tables)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', sm:'CapitaLand S$100k plus 3 tables — biggest single sponsorship to date.', pb:'Logo and presenter name collected\nTable allocation confirmed\nSponsor recognition slot in programme' },
+
+  { c:'sponsors', t:'Confirmed: RSM Singapore S$28k (1 table)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', sm:'RSM Singapore S$28k plus 1 table.', pb:'Logo collected\nTable allocation confirmed\nSponsor recognition slot in programme' },
+
+  { c:'sponsors', t:'Confirmed: WSG S$15k (0.5 table)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', sm:'WSG S$15k plus half a table.', pb:'Logo collected\nHalf-table sharing arrangement confirmed\nSponsor recognition slot in programme' },
+
+  { c:'sponsors', t:'Confirmed: Samsung S$12.5k (0.5 table)', o:'Xianna', s:'done', p:100, sd:'2026-03-01', ed:'2026-05-31', sm:'Samsung S$12.5k plus half a table. Separate from the LED tunnel ask.', pb:'Cash sponsorship confirmed\nLED tunnel ask is separate and additional\nLogo collected' },
+
+  { c:'sponsors', t:'Samsung LED tunnel sponsorship — Tue 16 Jun meeting', o:'James + Edwin', s:'progress', p:20, sd:'2026-06-16', ed:'2026-06-30', sm:'Samsung ask: 2 side panels 6m × 3m, 1 ceiling panel 6m × 3m, plus server and processor. Champions entrance tunnel becomes Samsung LED tunnel.', pb:'James and Edwin meet Jason from Samsung at 16 Jun meeting\nPitch the tunnel ask: technology partner positioning\nFrame as hero front-of-house placement, not back of room\nConfirm verbal commitment in meeting; email summary same day\nSamsung returns formal letter within one week\nIf yes: brief Ben on integration spec, rigging, content cycle\nIf no: revert to balloon arch fallback' },
+
+  { c:'sponsors', t:'Silverhill ingredient sponsorship — Irish duck (breast + crown)', o:'Xianna', s:'progress', p:30, sd:'2026-06-15', ed:'2026-07-15', sm:'Silverhill offering Irish frozen duck breast + duck crown. Verbal agreement sufficient.', pb:'Email Silverhill confirming RAS interest in duck breast + duck crown\nGet verbal agreement on quantities and recognition expectations\nConfirm in writing via reply email (no signed letter needed)\nBrief receiving chef at 24 June all-chefs meeting\nConfirm delivery logistics two weeks before event' },
+
+  { c:'sponsors', t:'Blue Current ingredient sponsorship — lamb + Iberico + ASC fish', o:'Xianna', s:'progress', p:30, sd:'2026-06-15', ed:'2026-07-15', sm:'Blue Current offering 6 lines: Amelia Park 35-day lamb rack, Iberico pork jowl (ICP), Iberico spareribs, ASC Barramundi, ASC Hybrid Grouper, Irish dry-aged short rib.', pb:'Email Blue Current with 6-item interest list\nGet verbal agreement on lines and quantities\nConfirm in writing via reply email\nBrief receiving chefs at 24 June meeting (assign each item to a course)\nConfirm delivery logistics two weeks before event' },
+
+  { c:'sponsors', t:'HNDRD — booth stations + free t-shirts', o:'Xianna', s:'blocked', p:30, sd:'2026-06-01', ed:'2026-06-30', b:'Awaiting HNDRD founder reply.', sm:'HNDRD ask is booth stations and free t-shirts; sitting with the founder.', pb:'Chase this week\nIf silent by Wednesday, RAS chases direct\nConfirm booth count and t-shirt quantities\nSlot into floor plan' },
+
+  { c:'sponsors', t:'Pernod Ricard / William Grant bar partnership', o:'Xianna + Andrew', s:'progress', p:40, sd:'2026-06-01', ed:'2026-06-30', sm:'Bar partnership in flight via Andrew\'s intros; close target end June.', pb:'Andrew has made intros to both brands\nXianna follows up with proposed package\nClose target end June\nBar activation design integrated with venue plan' },
+
+  { c:'sponsors', t:'Unilever — booth/table spend (product only)', o:'Xianna', s:'done', p:100, sd:'2026-05-01', ed:'2026-05-31', sm:'Unilever confirmed for booth product spend — no cash, no table.', pb:'Product confirmed\nNo cash component\nBooth location to be determined' },
+
+  { c:'sponsors', t:'Kewpie — returning product sponsor', o:'Xianna', s:'done', p:100, sd:'2026-05-01', ed:'2026-05-31', sm:'Kewpie returning as product sponsor.', pb:'Confirmed for 2026\nProduct quantities and delivery logistics tracked' },
+
+  { c:'sponsors', t:'In discussion: Far East, Frasers, Grab', o:'Xianna', s:'progress', p:25, sd:'2026-05-01', ed:'2026-07-31', sm:'Far East, Frasers and Grab all in active discussion.', pb:'Far East: active outreach, follow up bi-weekly\nFrasers: similar status\nGrab: similar status\nTarget close end July' },
+
+  { c:'sponsors', t:'In discussion: Freshening, Seafoodco, OpenTable, Lark', o:'Xianna', s:'progress', p:20, sd:'2026-05-01', ed:'2026-07-31', sm:'Four mid tier conversations in flight.', pb:'Freshening, Seafoodco, OpenTable, Lark all in tier 2\nMonthly follow-up cadence\nTarget at least 2 of 4 to close' },
+
+  { c:'sponsors', t:'In discussion: Carlsberg (beer sponsor)', o:'James', s:'progress', p:50, sd:'2026-06-01', ed:'2026-07-31', sm:'Carlsberg in discussion for beer category; exclusivity question still open.', pb:'Approach made\nNegotiating category exclusivity\nClose target end July\nIf no Carlsberg, secondary beer outreach' },
+
+  { c:'sponsors', t:'Luzerne (plate sponsor)', o:'Xianna', s:'done', p:100, sd:'2026-02-01', ed:'2026-03-31', sm:'Luzerne returning as plate sponsor.', pb:'Locked early\nPlate delivery and return logistics confirmed' },
+
+  { c:'sponsors', t:'Goodie bag items collection', o:'Xianna', s:'progress', p:30, sd:'2026-06-01', ed:'2026-08-31', sm:'Goodie bag items being collected through end August.', pb:'Rolling collection from sponsors\nTracking spreadsheet by sponsor and item\nAssembly closer to event' },
+
+  { c:'sponsors', t:'Sponsor letters for sign off', o:'Xianna', s:'progress', p:50, sd:'2026-02-01', ed:'2026-07-31', sm:'Sponsor commitment letters drafted; chasing returns through end July.', pb:'Letters drafted for each sponsor\nSent for signature\nFollow up on outstanding\nLogged when returned' },
+
+  { c:'sponsors', t:'Sponsor logos + presenter names', o:'Xianna', s:'progress', p:30, sd:'2026-07-01', ed:'2026-08-15', sm:'Logos and presenter names being collected mid July through mid August.', pb:'Email each confirmed sponsor for logo (vector) and presenter name\nLogos integrated into backdrop and EDM\nPresenter names integrated into emcee script' },
+
+  { c:'sponsors', t:'Sponsor activation integration with EO', o:'Xianna + Blink', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', sm:'Sponsor activations integrated into the run sheet — booth, stage, mentions all sequenced.', pb:'Coordinate booth placement on floor plan\nOn-stage moment per sponsor where applicable\nMention sequence in emcee script\nDocumented in run sheet' },
+
+  // ===== MENU CURATION =====
+  { c:'menu', t:'Chef Lamley meeting — 16 Jun', o:'James', s:'progress', p:50, sd:'2026-06-16', ed:'2026-06-16', sm:'Tuesday with Lamley. Pick third chef, lock pairings, agenda for 24 Jun chefs meeting.', pb:'Bring chef shortlist (90% locked)\nAgree on third chef for course 3\nLock 5-course pairings: Quynh (Kamon, course 1), Marvas (Qin, course 2), TBC (course 3), Greg (Moutarde, course 4), Pierre Herme (dessert)\nSet agenda for 24 June all-chefs meeting at RWS\nDiscuss tasting menu day options for week of 17-21 August' },
+
+  { c:'menu', t:'Confirm 3rd guest chef for course 3', o:'James + Lamley', s:'blocked', p:0, sd:'2026-06-16', ed:'2026-06-30', b:'Course 3 chef still pending.', sm:'The open gap in an otherwise locked five-course lineup.', pb:'Discuss shortlist at Lamley meeting Tuesday\nLamley nominates from her network\nJames confirms availability\nLock by end June\nBrief at 24 Jun all-chefs meeting' },
+
+  { c:'menu', t:'Lock guest chef course pairings (5 courses)', o:'James', s:'progress', p:60, sd:'2026-06-16', ed:'2026-06-30', sm:'Five-course chef pairings: Quynh (Kamon, Japanese), Marvas (Qin, Fusion), TBC, Greg (Moutarde, French), Pierre Herme (dessert).', pb:'Course 1: Chef Quynh of Kamon (Japanese)\nCourse 2: Chef Marvas of Qin (Fusion)\nCourse 3: TBC at Lamley meeting\nCourse 4: Chef Greg of Moutarde (French)\nDessert: Pierre Herme\nAll pairings locked end June, briefed at 24 Jun meeting' },
+
+  { c:'menu', t:'Brief chefs on Silverhill + Blue Current ingredient list', o:'Xianna', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-06-24', sm:'8 available ingredients across two suppliers. Chefs see the list before the 24 Jun meeting so they can plan.', pb:'Compile 8-item list: Silverhill duck breast + duck crown; Blue Current Amelia Park lamb, Iberico jowl, Iberico spareribs, ASC Barramundi, ASC Grouper, Irish short rib\nShare with each guest chef ahead of 24 Jun meeting\nAsk for initial preferences\nUsed as starting point for course assignments' },
+
+  { c:'menu', t:'Match available ingredients to chefs/courses', o:'James + Lamley', s:'not-started', p:0, sd:'2026-06-24', ed:'2026-07-15', sm:'Ingredient assignment happens at the 24 June chefs meeting. Each chef picks what fits their course.', pb:'At 24 Jun chefs meeting: review ingredient list with all chefs\nEach chef picks ingredients aligned to their course\nLamley arbitrates if conflicts\nFinal assignments documented and shared with suppliers\nDelivery logistics confirmed two weeks before event' },
+
+  { c:'menu', t:'All gala dinner chefs meeting — 24 Jun at RWS', o:'James', s:'not-started', p:0, sd:'2026-06-24', ed:'2026-06-24', sm:'All chefs meet 24 June at RWS — theme, sequencing, dietary, ingredient assignments.', pb:'All 5 guest chefs at RWS\nBrief on Arena of Champions theme\nLock course sequencing and timing\nDietary architecture briefed\nIngredient assignments from supplier list\nTasting day options discussed\nQuestions answered' },
+
+  { c:'menu', t:'Shortlist chefs (2025 winners preference)', o:'Xianna', s:'progress', p:90, sd:'2026-06-05', ed:'2026-06-30', sm:'Chef shortlist 90% done; Lamley signs off Tuesday.', pb:'Initial shortlist drafted by Xianna\nPreference for 2025 winners\nLamley sign-off at Tuesday meeting' },
+
+  { c:'menu', t:'Curate menu concept (Lamley + Xianna)', o:'Lamley + Xianna', s:'progress', p:20, sd:'2026-06-15', ed:'2026-07-31', sm:'Menu concept develops mid June after Lamley meeting; locks end July.', pb:'Concept direction set at Lamley meeting\nXianna documents and circulates\nEach chef contributes their course concept\nLamley reviews and adjusts for flow\nFinal concept locked end July' },
+
+  { c:'menu', t:'Brief inclusive menu (Halal/Veg)', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-07-31', sm:'Inclusive menu (Halal + Veg) briefed end July.', pb:'Halal stream briefed to all chefs\nVegetarian stream briefed to all chefs\nDietary architecture in place by end July\nFinal numbers confirmed after RSVPs close' },
+
+  { c:'menu', t:'Tasting menu day — week of 17-21 Aug', o:'James', s:'not-started', p:0, sd:'2026-08-17', ed:'2026-08-21', sm:'Tasting menu day lands one day in the week of 17-21 August; confirmed after chef availability.', pb:'Poll chefs for availability in that week\nLock specific date\nBook RWS kitchen\nInvite tasting panel: Lamley, James, Xianna, co-chairs\nDocument feedback per course' },
+
+  { c:'menu', t:'Menu tasting + finalisation', o:'Xianna', s:'not-started', p:0, sd:'2026-08-17', ed:'2026-08-25', sm:'Menu finalises in the week after tasting day, before end August.', pb:'Tasting day adjustments logged\nEach chef incorporates feedback\nFinal menu locked end August\nPrinted menus designed and ordered' },
+
+  { c:'menu', t:'Wine ordering — 3 vendors', o:'James', s:'progress', p:50, sd:'2026-07-01', ed:'2026-08-15', sm:'Three wine vendor quotes in hand; selecting by mid August.', pb:'Three vendor quotes received\nMatched to menu courses\nSelection made mid August\nOrder placed for delivery 5 days before event' },
+
+  { c:'menu', t:'Beer sponsor approach', o:'James', s:'progress', p:50, sd:'2026-06-01', ed:'2026-07-31', sm:'Beer sponsor discussions live — Carlsberg primary.', pb:'Carlsberg primary target\nBackup options identified\nClose target end July' },
+
+  { c:'menu', t:'Half-Time Show — 3 chef interview clips', o:'Blink Here', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-15', sm:'Half-Time Show is 3 chef interview clips with AI treatment at S$4,000. Shot first half August.', pb:'Scripts drafted by Blink\nThree chefs identified for interviews\nFilming arranged across early August\nAI treatment in post-production\nDelivered for show file by end August' },
+
+  { c:'menu', t:'Tablecloth colour confirmation', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', sm:'Tablecloth colour confirmed with venue August — sitting in the Arena palette.', pb:'Match Arena of Champions palette\nConfirm options with RWS\nSwatches reviewed\nLocked by end August' },
+
+  { c:'menu', t:'Brief group stage moment for chefs', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', sm:'Short chefs-on-stage recognition moment built into the programme — Lamley\'s ask.', pb:'Build into emcee script\nChefs called up briefly during recognition sequence\nApplause moment\nPhoto opportunity' },
+
+  { c:'menu', t:'Notify venue of alcohol delivery', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-10', sm:'Alcohol delivery notice to RWS first week September.', pb:'RWS requires notice at least 5 working days prior\nNotice sent first week September\nDelivery logistics confirmed' },
+
+  { c:'menu', t:'Identify menu issues + tweak', o:'Xianna', s:'not-started', p:0, sd:'2026-08-22', ed:'2026-08-31', sm:'Menu tweaks logged immediately after tasting day; locked end August.', pb:'Tasting day adjustments\nFinal menu locked end August' },
+
+  // ===== MC =====
+  { c:'mc', t:'23rd term MC swearing in — 19:45 ceremony', o:'James', s:'progress', p:30, sd:'2026-06-01', ed:'2026-09-16', sm:'New 23rd term MC sworn in at 19:45, 10 minutes, certificates presented by President.', pb:'Ceremony designed for 10 minutes\nCertificates presented by President\nLED wall runs MC names and portfolios\nAnimated character intros (separate task) play during entrance\nPhoto moment for new MC' },
+
+  { c:'mc', t:'Appointment certificate design and print', o:'Xianna', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', sm:'Certificates designed and printed by end August, framed for ceremony.', pb:'Design certificate template\nProof for each MC member\nPrint and frame\nReady for ceremony' },
+
+  { c:'mc', t:'LED wall content — MC names + portfolios', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', sm:'LED wall runs each MC member\'s name, photo and portfolio line during the swearing in.', pb:'Collect photo from each MC member\nName and portfolio line for each\nLayout designed in line with theme\nIntegrated into show file' },
+
+  { c:'mc', t:'MC animated intro concept (Gladiator-style)', o:'Andrew (lead)', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-31', sm:'MC intros as Gladiator-style animated character videos. Andrew leads.', pb:'Andrew sends sample reference video\nRAS approves concept\nMotion clips captured at retreat\nAI overlay applied\nApproved per MC member' },
+
+  { c:'mc', t:'Capture MC motion clips at retreat', o:'Andrew', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-31', sm:'Mobile footage from each MC member captured at the next retreat.', pb:'Schedule capture session at retreat\nEach MC films short motion clip on mobile\nFootage collected by Andrew\nSent to editor for AI overlay' },
+
+  { c:'mc', t:'Sample reference video for MC intro concept', o:'Andrew', s:'not-started', p:0, sd:'2026-06-30', ed:'2026-07-15', sm:'Andrew sends sample reference of the MC intro style for sign-off.', pb:'Andrew sources Gladiator-style reference example\nShares with RAS\nDirection approved before motion clip capture' },
+
+  { c:'mc', t:'MC roving camera at entrance', o:'Blink Here', s:'not-started', p:0, sd:'2026-09-15', ed:'2026-09-16', sm:'A roving camera catches each MC at entrance — clips replace some on-stage time.', pb:'Camera operator briefed\nEach MC filmed during arrivals\nClips edited for inclusion during swearing in\nReduces ceremony stage time' },
+
+  { c:'mc', t:'MC admin brief', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-02', sm:'MC admin brief lands two weeks before — choreography, dress, cue points.', pb:'Draft admin brief: arrival time, dress code, cue points, walk path\nShare with all MC members two weeks before\nQ&A session if needed\nDress code reinforced' },
+
+  { c:'mc', t:'Show MCs a preview of the event', o:'James', s:'blocked', p:0, sd:'2026-06-25', ed:'2026-07-15', b:'Cannot show until Blink delivers backdrop + EDM (post-signing).', sm:'MC preview tees up once backdrop + EDM are produced.', pb:'Wait for backdrop and EDM from Blink (post-signing)\nPrepare 5-minute preview deck\nShow at next MC catch-up\nGather feedback' },
+
+  { c:'mc', t:'Request RAS MC to buy/sell tables', o:'James', s:'progress', p:60, sd:'2026-06-01', ed:'2026-07-31', sm:'MC members personally asked to take or move at least one table.', pb:'Direct WhatsApp ask each member\nLog commitments\nFollow up at MC meetings' },
+
+  // ===== VIPs =====
+  { c:'vip', t:'Send VIP invitations', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-15', sm:'VIP invitations posted first half July.', pb:'Compile VIP list\nDesign printed invitation\nMail-merge and post\nDigital follow-up' },
+
+  { c:'vip', t:'Send sponsor invitations + RSVP tracking', o:'James', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-07-15', sm:'Sponsor invitations posted first half July with RSVP form.', pb:'Sponsor list confirmed\nInvitations with RSVP form sent\nResponses tracked in spreadsheet' },
+
+  { c:'vip', t:'VVIP seating + parking allocation', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-12', sm:'VVIPs seated tables 1-5; parking reserved at RWS for arrival.', pb:'VVIPs identified\nTables 1-5 allocated to VVIPs\nParking reserved with RWS\nDriver protocol confirmed' },
+
+  { c:'vip', t:'Print + place VVIP/VIP name tents', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-16', sm:'Name tents printed and placed morning of show.', pb:'Print name tents the morning of\nPlace on assigned seats\nDouble-check at 16:00' },
+
+  { c:'vip', t:'Prepare parking coupons', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-16', sm:'Parking coupons prepped morning of show.', pb:'Coupons collected from RWS\nDistributed at registration to VVIP drivers' },
+
+  { c:'vip', t:'VIP welcome experience design', o:'Xianna', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', sm:'VIP welcome flow designed — arrival, photo, escort to table.', pb:'Walk path designed from car to table\nPhoto opportunity at paparazzi point\nDedicated escort per VVIP table' },
+
+  { c:'vip', t:'Telegram broadcast channel for nominees', o:'Xianna', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-08-15', sm:'Nominee comms via Telegram broadcast — protects everyone\'s numbers.', pb:'Create Telegram broadcast channel\nNominees invited via unique link\nOne-way comms from RAS\nEvent reminders and briefing pushed via channel' },
+
+  // ===== SITTING ARRANGEMENTS =====
+  { c:'seat', t:'Digital table map (replaces registration booth)', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', sm:'Table map digital, emailed pre event, QR at venue for guests on the night.', pb:'Design digital table map\nEmail to all guests pre-event\nQR code printed and placed at venue entrance for night-of access' },
+
+  { c:'seat', t:'5 large RWS-provided seating plans outside ballroom', o:'James + RWS', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-15', sm:'RWS provides 5 large physical seating plans strategically placed outside the ballroom for less tech-savvy guests.', pb:'Confirm count with RWS (5 plans confirmed)\nDesign large-format seating plan\nDeliver to RWS by 14 Sep\nRWS places at 5 strategic spots outside ballroom\nUpdated if any seat changes day-of' },
+
+  { c:'seat', t:'Confirm RWS reception setup + server count', o:'James', s:'blocked', p:0, sd:'2026-06-20', ed:'2026-06-24', b:'Awaiting RWS response on 24 June.', sm:'Checking with RWS on reception layout and server numbers — closes 24 June.', pb:'RWS to come back on 24 June\nConfirm reception layout fits expected guest flow\nConfirm server count appropriate for headcount\nDocument any constraints' },
+
+  { c:'seat', t:'Collate guest RSVPs', o:'James', s:'not-started', p:0, sd:'2026-07-15', ed:'2026-08-31', sm:'RSVPs collated July through end August.', pb:'RSVP form linked from digital invite\nResponses logged in spreadsheet\nFollow up on non-responses\nFinal numbers by end August' },
+
+  { c:'seat', t:'Collate dietary requirements', o:'James', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-09-05', sm:'Dietary needs collected with each RSVP; final list to RWS by 10 Sep.', pb:'Dietary form bundled with RSVP\nLogged per guest\nAggregated counts per dietary type\nFinal list to RWS kitchen by 10 September' },
+
+  { c:'seat', t:'Send final dietary to venue', o:'James', s:'not-started', p:0, sd:'2026-09-08', ed:'2026-09-10', sm:'Final dietary list to RWS kitchen 10 September.', pb:'Final aggregated list compiled\nSent to RWS kitchen with table allocation\nConfirmation received' },
+
+  { c:'seat', t:'Finalise seating arrangements', o:'James', s:'not-started', p:0, sd:'2026-08-25', ed:'2026-09-10', sm:'Seating finalises late August through 10 September — adjacencies first, dietary last.', pb:'Sponsor adjacencies locked first\nMC tables allocated\nVVIP front tables\nDietary requirements integrated\nFinal seating chart locked 10 September' },
+
+  { c:'seat', t:'Send table numbers + reminders', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-14', sm:'Table numbers and arrival reminders sent two weeks out.', pb:'Email guests their table number\nInclude arrival time, parking info, wristband collection\nFinal reminder 48 hours before' },
+
+  // ===== LOCATION =====
+  { c:'loc', t:'Venue contract — RWS', o:'James', s:'done', p:100, sd:'2025-11-15', ed:'2026-01-31', sm:'RWS Ballroom signed and locked.', pb:'Contract signed November 2025\nDeposit paid\nVenue locked' },
+
+  { c:'loc', t:'Site recce — initial', o:'James', s:'done', p:100, sd:'2025-12-01', ed:'2025-12-15', sm:'Initial recce done in December.', pb:'Initial walkthrough December 2025\nLayout options photographed\nNotes shared with planning team' },
+
+  { c:'loc', t:'Site recce — co-chairs walkthrough (12 Jun)', o:'James', s:'done', p:100, sd:'2026-06-12', ed:'2026-06-12', sm:'Co-chairs walked the room on 12 June.', pb:'Co-chairs walked the room\nDress intel confirmed\nSamsung tunnel concept discussed' },
+
+  { c:'loc', t:'Joint site recce — Blink + RWS + RAS', o:'James', s:'blocked', p:0, sd:'2026-06-22', ed:'2026-06-30', b:'Cannot schedule until Blink signs.', sm:'Triple recce planned for second half June, post signing.', pb:'Schedule after Blink signing\nWalk through stage, load in, sponsor activations, GOH path\nDocument constraints\nFloor plan iteration begins' },
+
+  { c:'loc', t:'Confirm RWS stage dimensions + load-in route', o:'James', s:'not-started', p:0, sd:'2026-06-22', ed:'2026-06-30', sm:'Stage dims and load in route confirmed at the triple recce.', pb:'Pull from RWS technical pack\nCross check Blink rigging plan\nDocumented' },
+
+  { c:'loc', t:'Confirm screen ratios (LED + side screens)', o:'James', s:'blocked', p:0, sd:'2026-07-01', ed:'2026-07-15', b:'Awaiting Ben.', sm:'Screen ratios locking with Ben mid July.', pb:'Same ask as EO category — coordinated with Ben\nConfirmed and shared' },
+
+  { c:'loc', t:'Power, rigging, structural sign off (PE & SDL)', o:'James + Blink', s:'not-started', p:0, sd:'2026-08-01', ed:'2026-08-31', sm:'Structural, rigging and power sign off coordinated with PE & SDL endorsement.', pb:'RWS engineering sign-off coordinated\nPE & SDL endorsement (in Blink scope at S$2,200)\nDocumentation filed' },
+
+  { c:'loc', t:'Plotters floor plan signed off', o:'James', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-08-31', sm:'Floor plan signed by Blink, RWS, RAS end August.', pb:'Final floor plan drafted by Blink\nSigned by Blink, RWS, RAS\nLocked for bump-in' },
+
+  { c:'loc', t:'Bump-in schedule confirmed', o:'James', s:'not-started', p:0, sd:'2026-09-10', ed:'2026-09-15', sm:'Bump in schedule confirmed week before event.', pb:'Load in timings locked\nCrew arrival schedule\nVendor coordination' },
+
+  { c:'loc', t:'Tech rehearsal slot confirmed', o:'James', s:'not-started', p:0, sd:'2026-09-10', ed:'2026-09-15', sm:'Tech rehearsal slot locked for 15 September.', pb:'Tech rehearsal booked for 15 Sep\nAll departments attend\nFull run-through' },
+
+  { c:'loc', t:'Confirm packing room location', o:'James', s:'not-started', p:0, sd:'2026-09-01', ed:'2026-09-15', sm:'Packing room location confirmed with RWS in the first half of September.', pb:'Confirm with RWS\nAssign for nominee gift handling' },
+
+  // ===== MISC =====
+  { c:'misc', t:'E-magazine ownership — RAS in-house', o:'James + Xianna', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-30', sm:'E-magazine removed from Blink scope. RAS handles production, publication and dissemination in-house.', pb:'Confirmed: RAS Secretariat owns production\nXianna or Carin assigned as content lead\nProduction timeline backed from event date\nDistribution plan via existing RAS channels' },
+
+  { c:'misc', t:'Brochure decision — removed from scope', o:'James', s:'done', p:100, sd:'2026-06-15', ed:'2026-06-15', sm:'Brochure removed from scope. Was S$3,000, could be added back at S$2,000 if needed.', pb:'Decision: brochure out of scope\nOption to add back at S$2,000 if priorities change\nFor now, no brochure printed' },
+
+  { c:'misc', t:'Outstanding chain dining credit letters', o:'James', s:'progress', p:60, sd:'2026-05-15', ed:'2026-06-30', sm:'Four chain dining credit letters still outstanding — chased this week.', pb:'Outstanding: WILDSEED CAFÉ, GUZMAN Y GOMEZ, HAKKA YU, PUTIEN\nChase each contact directly\nLog returns\nClose by end June' },
+
+  { c:'misc', t:'Cross-check formatted chain outlet strings (5)', o:'James', s:'progress', p:50, sd:'2026-05-15', ed:'2026-06-30', sm:'Five formatted chain strings being cross checked against the actual letters this week.', pb:'CEDELE, DIAN XIAO ER, SWENSEN\'S, CASA VOSTRA, TIM HO WAN\nCross-check against actual letters\nFix any discrepancies\nDatabase updated' },
+
+  { c:'misc', t:'Reusable Launch Pedestal design', o:'Blink Here', s:'not-started', p:0, sd:'2026-06-20', ed:'2026-07-15', sm:'Launch Pedestal lighted flame designed for yearly reuse — RAS logo going to Ben.', pb:'RAS logo sent to Ben (separate task)\nBen returns design draft\nRAS approves\nProduced for 2026\nReused 2027 onwards' },
+
+  { c:'misc', t:'Nominee briefing pack — arrival, wristband, contact', o:'Xianna', s:'not-started', p:0, sd:'2026-08-15', ed:'2026-09-10', sm:'Nominees get a briefing pack two weeks out.', pb:'Compile briefing pack: arrival time, wristband collection point, contact person, dress code\nSend to nominees two weeks before event\nReminder via Telegram channel' },
+
+  { c:'misc', t:'2027 strategy — what RAS sells or promotes', o:'James + Xianna', s:'not-started', p:0, sd:'2026-07-01', ed:'2026-09-30', sm:'Strategic thinking on what RAS sells or promotes at next year\'s event. Low-pressure, long-window.', pb:'Brainstorm sessions James + Xianna across summer\nLook at 2026 learnings for what worked\nIdentify new revenue or recognition opportunities\nDraft 2027 direction by end September\nFeeds into 2027 teaser video brief' },
+
+  { c:'misc', t:'Hot wash debrief — 15 mins after show', o:'James', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-16', sm:'15 minute hot wash with Blink the moment the show wraps.', pb:'15 minutes immediately after show with EO\nWhat worked, what did not\nNotes for AAR\nNo decisions, just observations' },
+
+  { c:'misc', t:'Joint AAR with Blink within 2 weeks', o:'James + Blink', s:'not-started', p:0, sd:'2026-09-17', ed:'2026-09-30', sm:'Full AAR with Blink within two weeks of the show.', pb:'Formal AAR meeting scheduled\nReview against AAR fixes from prior event\nDocument new learnings\nFeed into 2027 planning' },
+
+  { c:'misc', t:'Post-event highlight reel', o:'Blink Here', s:'not-started', p:0, sd:'2026-09-17', ed:'2026-09-30', sm:'Highlight reel delivered by Blink within two weeks of the show.', pb:'Blink cuts from show footage\nRAS reviews\nReleased on RAS channels within 2 weeks' },
+
+  { c:'misc', t:'Post-event social media', o:'James + Xianna', s:'not-started', p:0, sd:'2026-09-16', ed:'2026-09-30', sm:'Recap content across all channels for two weeks post event.', pb:'Recap content drafted same night\nPosted across all channels show night and following day\nDaily content for two weeks\nWinners, key moments, sponsor recognition' }
 ];
 
 let state = { tasks: [] };
-let editingTaskId = null;
 const collapsed = new Set();
+let currentPanelTaskId = null;
 
 async function loadState() {
   try {
@@ -573,7 +809,7 @@ async function saveState() {
 function initDefaults() {
   state = { tasks: DEFAULT_TASKS.map((t, i) => ({
     id: 't' + i, category: t.c, title: t.t, owner: t.o, status: t.s, pct: t.p,
-    startDate: t.sd, endDate: t.ed, blocker: t.b || '', nextAction: t.n || '', summary: t.sm || ''
+    startDate: t.sd, endDate: t.ed, blocker: t.b || '', summary: t.sm || '', playbook: t.pb || ''
   })) };
 }
 
@@ -585,33 +821,12 @@ function statusLabel(s) { return { 'done':'Done', 'progress':'In progress', 'blo
 function escapeHtml(str) { return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 function isMilestone(t) { return t.startDate === t.endDate; }
 
-// ============ SHEET INTEGRATION ============
-function getSheetUrl() {
-  try { return localStorage.getItem(SHEET_URL_KEY) || ''; } catch (e) { return ''; }
-}
-function setSheetUrl(url) {
-  try { if (url) localStorage.setItem(SHEET_URL_KEY, url); else localStorage.removeItem(SHEET_URL_KEY); } catch (e) {}
-}
-
-function parseCSVLine(line) {
-  const result = []; let current = ''; let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (inQuotes && line[i+1] === '"') { current += '"'; i++; }
-      else { inQuotes = !inQuotes; }
-    } else if (ch === ',' && !inQuotes) {
-      result.push(current); current = '';
-    } else { current += ch; }
-  }
-  result.push(current);
-  return result;
-}
+// ============ SHEET ============
+function getSheetUrl() { try { return localStorage.getItem(SHEET_URL_KEY) || ''; } catch (e) { return ''; } }
+function setSheetUrl(url) { try { if (url) localStorage.setItem(SHEET_URL_KEY, url); else localStorage.removeItem(SHEET_URL_KEY); } catch (e) {} }
 
 function parseCSV(text) {
-  // Handle CRLF and quoted multi-line cells properly
-  const rows = []; let buffer = ''; let inQuotes = false; let current = [];
-  let cell = '';
+  const rows = []; let inQuotes = false; let current = []; let cell = '';
   for (let i = 0; i < text.length; i++) {
     const ch = text[i];
     if (ch === '"') {
@@ -653,12 +868,12 @@ function csvRowsToTasks(rows) {
     title: r.Title || r.title || '',
     owner: r.Owner || r.owner || '',
     status: normaliseStatus(r.Status || r.status),
-    pct: parseInt(r['% Complete'] || r.Percent || r.percent || '0', 10) || 0,
-    startDate: r['Start Date'] || r.Start || r.start || '',
-    endDate: r['End Date'] || r.End || r.end || '',
+    pct: parseInt(r['% Complete'] || r.Percent || '0', 10) || 0,
+    startDate: r['Start Date'] || r.Start || '',
+    endDate: r['End Date'] || r.End || '',
     blocker: r.Blocker || r.blocker || '',
-    nextAction: r['Next Action'] || r.NextAction || r.nextAction || '',
-    summary: r.Summary || r.summary || ''
+    summary: r.Summary || r.summary || '',
+    playbook: r.Playbook || r.playbook || ''
   })).filter(t => t.title);
 }
 
@@ -673,7 +888,6 @@ async function fetchFromSheet(url) {
     if (tasks.length === 0) throw new Error('No valid tasks (check Title column)');
     return tasks;
   } catch (err) {
-    console.error('Sheet fetch failed:', err);
     return { error: err.message };
   }
 }
@@ -685,11 +899,9 @@ function updateSheetStatus() {
   if (url) {
     el.className = 'sheet-status connected';
     txt.innerHTML = '<strong>Connected to Google Sheets.</strong> Edit in the sheet, click Generate to refresh.';
-    document.body.classList.add('sheet-connected');
   } else {
     el.className = 'sheet-status disconnected';
-    txt.innerHTML = '<strong>Not connected to a sheet.</strong> Running on local browser data only — click Sheet Settings to connect.';
-    document.body.classList.remove('sheet-connected');
+    txt.innerHTML = '<strong>Not connected.</strong> Running on local data — click Sheet Settings to connect.';
   }
 }
 
@@ -698,7 +910,6 @@ function openSheetModal() {
   document.getElementById('disconnectBtn').style.display = getSheetUrl() ? 'inline-block' : 'none';
   document.getElementById('sheetModalBg').classList.add('show');
 }
-
 function closeSheetModal(e) {
   if (e && e.target.id !== 'sheetModalBg') return;
   document.getElementById('sheetModalBg').classList.remove('show');
@@ -707,13 +918,9 @@ function closeSheetModal(e) {
 async function connectSheet() {
   const url = document.getElementById('sheetUrlInput').value.trim();
   if (!url) { alert('Paste your published CSV URL first.'); return; }
-  if (!url.includes('docs.google.com') || !url.includes('csv')) {
-    if (!confirm('That does not look like a published Google Sheets CSV URL. Try anyway?')) return;
-  }
   setSheetUrl(url);
   updateSheetStatus();
   document.getElementById('sheetModalBg').classList.remove('show');
-  // Immediately try to fetch
   const ts = document.getElementById('genTimestamp');
   ts.textContent = 'Fetching from sheet...';
   const result = await fetchFromSheet(url);
@@ -732,7 +939,7 @@ async function connectSheet() {
 }
 
 function disconnectSheet() {
-  if (!confirm('Disconnect from sheet? You will go back to local browser data.')) return;
+  if (!confirm('Disconnect from sheet?')) return;
   setSheetUrl('');
   updateSheetStatus();
   document.getElementById('sheetModalBg').classList.remove('show');
@@ -882,10 +1089,13 @@ function renderGantt() {
 
     catTasks.forEach(task => {
       const tn = document.createElement('div');
-      tn.className = 'gantt-task-name';
+      tn.className = 'gantt-task-name' + (task.id === currentPanelTaskId ? ' active-task' : '');
       tn.dataset.catId = cat.id;
       if (collapsed.has(cat.id)) tn.style.display = 'none';
-      tn.onclick = () => openTaskModal(task.id);
+      tn.onclick = () => openPanel(task.id);
+      tn.onmouseenter = (e) => showTooltip(e, task);
+      tn.onmousemove = (e) => positionTooltip(e);
+      tn.onmouseleave = () => hideTooltip();
       tn.innerHTML = `<span class="gantt-task-name-text">${escapeHtml(task.title)}</span><span class="gantt-task-owner">${escapeHtml(task.owner)}</span>`;
       g.appendChild(tn);
 
@@ -898,7 +1108,7 @@ function renderGantt() {
         const x = dateToX(task.startDate);
         tt.innerHTML = `<div class="gantt-milestone ${task.status}" style="left:${x - 9}px;"><div class="gantt-milestone-shape"></div></div>`;
         const ms = tt.querySelector('.gantt-milestone');
-        ms.onclick = (e) => { e.stopPropagation(); openTaskModal(task.id); };
+        ms.onclick = (e) => { e.stopPropagation(); openPanel(task.id); };
         ms.onmouseenter = (e) => showTooltip(e, task);
         ms.onmousemove = (e) => positionTooltip(e);
         ms.onmouseleave = () => hideTooltip();
@@ -910,7 +1120,7 @@ function renderGantt() {
         const dot = bar.width > 40 ? `<span class="gantt-bar-dot"></span>` : '';
         tt.innerHTML = `<div class="gantt-bar ${task.status}" style="left:${bar.left}px;width:${bar.width}px;"><div class="gantt-bar-fill" style="width:${100 - fw}%;left:${fw}%;"></div>${dh}${dot}<span class="gantt-bar-label">${escapeHtml(task.title)}</span></div>`;
         const be = tt.querySelector('.gantt-bar');
-        be.onclick = (e) => { e.stopPropagation(); openTaskModal(task.id); };
+        be.onclick = (e) => { e.stopPropagation(); openPanel(task.id); };
         be.onmouseenter = (e) => showTooltip(e, task);
         be.onmousemove = (e) => positionTooltip(e);
         be.onmouseleave = () => hideTooltip();
@@ -924,12 +1134,12 @@ function renderGantt() {
   const el = document.createElement('div'); el.className = 'event-line'; el.style.cssText = `left:${300 + eX}px;`; g.appendChild(el);
 }
 
+// ============ TOOLTIP ============
 function showTooltip(e, task) {
+  if (document.body.classList.contains('panel-open')) return; // don't show tooltip when panel is open
   const tip = document.getElementById('tooltip');
-  const bh = task.blocker ? `<div class="tooltip-block"><span class="tooltip-block-label">Blocker</span>${escapeHtml(task.blocker)}</div>` : '';
-  const nh = task.nextAction ? `<span class="tooltip-next-label">Next action</span>${escapeHtml(task.nextAction)}` : '';
-  const sh = task.summary ? `<div class="tooltip-summary">"${escapeHtml(task.summary)}"</div>` : '';
-  tip.innerHTML = `<div class="tooltip-title">${escapeHtml(task.title)}</div><span class="tooltip-status ${task.status}">${statusLabel(task.status)} · ${task.pct}%</span><div class="tooltip-meta">${escapeHtml(task.owner)} · ${fmtDate(task.startDate)} → ${fmtDate(task.endDate)}</div>${bh}${nh}${sh}`;
+  const sh = task.summary ? `<div class="tooltip-summary">${escapeHtml(task.summary)}</div>` : '';
+  tip.innerHTML = `<div class="tooltip-title">${escapeHtml(task.title)}</div><span class="tooltip-status ${task.status}">${statusLabel(task.status)} · ${task.pct}%</span><div class="tooltip-meta">${escapeHtml(task.owner)} · ${fmtDate(task.startDate)} → ${fmtDate(task.endDate)}</div>${sh}<div class="tooltip-hint">Click for full playbook →</div>`;
   tip.classList.add('show'); positionTooltip(e);
 }
 function positionTooltip(e) {
@@ -940,7 +1150,105 @@ function positionTooltip(e) {
 }
 function hideTooltip() { document.getElementById('tooltip').classList.remove('show'); }
 
-function toggleCategory(catId) { if (collapsed.has(catId)) collapsed.delete(catId); else collapsed.add(catId); renderGantt(); }
+// ============ SLIDE-OUT PANEL ============
+function openPanel(taskId) {
+  const t = state.tasks.find(x => x.id === taskId);
+  if (!t) return;
+  hideTooltip();
+  currentPanelTaskId = taskId;
+  
+  const blockerHtml = t.blocker ? `
+    <div class="panel-section">
+      <div class="panel-section-label">Blocker</div>
+      <div class="panel-blocker">${escapeHtml(t.blocker)}</div>
+    </div>` : '';
+  
+  const summaryHtml = t.summary ? `
+    <div class="panel-section">
+      <div class="panel-section-label">Status in one line</div>
+      <div class="panel-summary">
+        ${escapeHtml(t.summary)}
+        <button class="panel-copy-btn" onclick="copySummary(this, '${t.id}')">Copy</button>
+      </div>
+    </div>` : '';
+  
+  let playbookHtml = '';
+  if (t.playbook && t.playbook.trim()) {
+    const steps = t.playbook.split('\n').map(s => s.trim()).filter(s => s).map(s => s.replace(/^\d+[\.\)]\s*/, ''));
+    if (steps.length > 1) {
+      playbookHtml = `
+        <div class="panel-section">
+          <div class="panel-section-label">Playbook</div>
+          <ol class="playbook-list">${steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+        </div>`;
+    } else if (steps.length === 1) {
+      playbookHtml = `
+        <div class="panel-section">
+          <div class="panel-section-label">Next Action</div>
+          <div class="panel-section-text">${escapeHtml(steps[0])}</div>
+        </div>`;
+    }
+  }
+  
+  document.getElementById('panelContent').innerHTML = `
+    <div class="panel-header">
+      <button class="panel-close" onclick="closePanel()">✕</button>
+      <div class="panel-title">${escapeHtml(t.title)}</div>
+      <div class="panel-meta">
+        <span class="panel-status ${t.status}">${statusLabel(t.status)} · ${t.pct}%</span>
+        <span class="panel-owner-badge">${escapeHtml(t.owner)}</span>
+        <span class="panel-dates">${fmtDate(t.startDate)} → ${fmtDate(t.endDate)}</span>
+      </div>
+    </div>
+    <div class="panel-body">
+      ${summaryHtml}
+      ${blockerHtml}
+      ${playbookHtml}
+    </div>
+  `;
+  
+  document.getElementById('slidePanel').classList.add('open');
+  document.body.classList.add('panel-open');
+  // Mark active task highlight
+  document.querySelectorAll('.gantt-task-name').forEach(el => el.classList.remove('active-task'));
+  // Re-render to apply active state — or just find the matching row
+  document.querySelectorAll('.gantt-task-name').forEach(el => {
+    if (el.onclick && el.onclick.toString().includes("'" + taskId + "'")) {
+      el.classList.add('active-task');
+    }
+  });
+}
+
+function closePanel() {
+  document.getElementById('slidePanel').classList.remove('open');
+  document.body.classList.remove('panel-open');
+  currentPanelTaskId = null;
+  document.querySelectorAll('.gantt-task-name').forEach(el => el.classList.remove('active-task'));
+}
+
+function copySummary(btn, taskId) {
+  const t = state.tasks.find(x => x.id === taskId);
+  if (!t || !t.summary) return;
+  navigator.clipboard.writeText(t.summary).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// ESC to close panel
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (document.body.classList.contains('panel-open')) closePanel();
+    document.getElementById('sheetModalBg').classList.remove('show');
+  }
+});
+
+function toggleCategory(catId) {
+  if (collapsed.has(catId)) collapsed.delete(catId);
+  else collapsed.add(catId);
+  renderGantt();
+}
 
 function populateFilters() {
   const owners = [...new Set(state.tasks.map(t => t.owner).filter(Boolean))].sort();
@@ -949,94 +1257,14 @@ function populateFilters() {
   sel.innerHTML = '<option value="">All owners</option>' + owners.map(o => `<option value="${escapeHtml(o)}" ${o === cur ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('');
 }
 
-function openTaskModal(taskId) {
-  if (getSheetUrl() && taskId) {
-    if (!confirm('Sheet is connected. Edits here are TEMPORARY — they will be overwritten on next Generate. Edit in the Google Sheet instead. Open anyway?')) return;
-  }
-  editingTaskId = taskId || null;
-  document.getElementById('modalTitle').textContent = taskId ? 'Edit task' : 'New task';
-  document.getElementById('deleteBtn').style.display = taskId ? 'inline-block' : 'none';
-  const cs = document.getElementById('f-cat');
-  cs.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${escapeHtml(c.n)}</option>`).join('');
-  if (taskId) {
-    const t = state.tasks.find(x => x.id === taskId); if (!t) return;
-    document.getElementById('f-title').value = t.title;
-    document.getElementById('f-owner').value = t.owner;
-    document.getElementById('f-cat').value = t.category;
-    document.getElementById('f-start').value = t.startDate || '';
-    document.getElementById('f-end').value = t.endDate || '';
-    document.getElementById('f-status').value = t.status;
-    document.getElementById('f-pct').value = t.pct;
-    document.getElementById('f-blocker').value = t.blocker || '';
-    document.getElementById('f-next').value = t.nextAction || '';
-    document.getElementById('f-say').value = t.summary || '';
-  } else {
-    document.getElementById('f-title').value = '';
-    document.getElementById('f-owner').value = 'James';
-    document.getElementById('f-start').value = '2026-06-15';
-    document.getElementById('f-end').value = '';
-    document.getElementById('f-status').value = 'not-started';
-    document.getElementById('f-pct').value = 0;
-    document.getElementById('f-blocker').value = '';
-    document.getElementById('f-next').value = '';
-    document.getElementById('f-say').value = '';
-  }
-  document.getElementById('modalBg').classList.add('show');
-}
-
-function saveTask() {
-  const d = {
-    title: document.getElementById('f-title').value.trim(),
-    owner: document.getElementById('f-owner').value.trim(),
-    category: document.getElementById('f-cat').value,
-    startDate: document.getElementById('f-start').value,
-    endDate: document.getElementById('f-end').value,
-    status: document.getElementById('f-status').value,
-    pct: parseInt(document.getElementById('f-pct').value, 10) || 0,
-    blocker: document.getElementById('f-blocker').value.trim(),
-    nextAction: document.getElementById('f-next').value.trim(),
-    summary: document.getElementById('f-say').value.trim()
-  };
-  if (!d.title) { alert('Title is required.'); return; }
-  if (editingTaskId) {
-    const i = state.tasks.findIndex(x => x.id === editingTaskId);
-    if (i >= 0) state.tasks[i] = { ...state.tasks[i], ...d };
-  } else { d.id = 't' + Date.now(); state.tasks.push(d); }
-  saveState(); closeModal(); render();
-}
-
-function deleteTaskFromModal() {
-  if (!editingTaskId) return;
-  const t = state.tasks.find(x => x.id === editingTaskId);
-  if (!t || !confirm('Delete "' + t.title + '"?')) return;
-  state.tasks = state.tasks.filter(x => x.id !== editingTaskId);
-  saveState(); closeModal(); render();
-}
-
-function closeModal(e) {
-  if (e && e.target.id !== 'modalBg') return;
-  document.getElementById('modalBg').classList.remove('show');
-  editingTaskId = null;
-}
-
-function toggleReadOnly() { document.body.classList.toggle('readonly'); }
-
-function exportJSON() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'ras-gantt-' + new Date().toISOString().slice(0, 10) + '.json'; a.click();
-  URL.revokeObjectURL(url);
-}
-
 function csvEscape(s) {
   s = String(s || '');
-  if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+  if (s.includes(',') || s.includes('"') || s.includes('\n') || s.includes('\r')) return '"' + s.replace(/"/g, '""') + '"';
   return s;
 }
 
 function exportCSV() {
-  const headers = ['Category','Title','Owner','Status','% Complete','Start Date','End Date','Blocker','Next Action','Summary'];
+  const headers = ['Category','Title','Owner','Status','% Complete','Start Date','End Date','Blocker','Summary','Playbook'];
   const catNameById = {}; CATEGORIES.forEach(c => { catNameById[c.id] = c.n; });
   const statusName = { 'done':'Done', 'progress':'In progress', 'blocked':'Blocked', 'not-started':'Not started' };
   const rows = [headers.join(',')];
@@ -1050,8 +1278,8 @@ function exportCSV() {
       csvEscape(t.startDate),
       csvEscape(t.endDate),
       csvEscape(t.blocker),
-      csvEscape(t.nextAction),
-      csvEscape(t.summary)
+      csvEscape(t.summary),
+      csvEscape(t.playbook)
     ].join(','));
   });
   const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
@@ -1061,34 +1289,10 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
-function importJSON() {
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = '.json';
-  input.onchange = (e) => {
-    const f = e.target.files[0]; if (!f) return;
-    const r = new FileReader();
-    r.onload = (ev) => {
-      try {
-        const d = JSON.parse(ev.target.result);
-        if (d && Array.isArray(d.tasks)) { state = d; saveState(); render(); }
-        else { alert('Invalid file format.'); }
-      } catch (err) { alert('Could not read file.'); }
-    };
-    r.readAsText(f);
-  };
-  input.click();
-}
-
-function resetData() {
-  if (!confirm('Reset to default data? All your edits will be lost.')) return;
-  initDefaults(); saveState(); collapsed.clear(); render();
-}
-
 (async function init() {
   await loadState();
   updateSheetStatus();
   render();
-  // If a sheet is connected, fetch fresh data on load
   if (getSheetUrl()) {
     const result = await fetchFromSheet(getSheetUrl());
     if (result && Array.isArray(result)) {
