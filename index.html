@@ -106,10 +106,51 @@ select.btn { padding-right: 8px; }
 .gantt-task-name { padding: 9px 18px 9px 36px; font-size: 13px; color: var(--ink); background: var(--paper); border-bottom: 1px solid var(--rule-soft); border-right: 1px solid var(--rule); position: sticky; left: 0; z-index: 5; display: flex; align-items: center; cursor: pointer; line-height: 1.3; min-height: 42px; transition: background 0.12s; }
 .gantt-task-name:hover { background: var(--gold-faint); }
 .gantt-task-name.active-task { background: var(--gold-pale); }
+.gantt-task-name.parent { background: linear-gradient(90deg, var(--gold-faint) 0%, var(--paper) 30%); }
+.gantt-task-name.parent .gantt-task-name-text { font-weight: 700; color: var(--ink); }
+.gantt-task-name.child { padding-left: 62px; }
+.gantt-task-name.child::before {
+  content: "";
+  position: absolute;
+  left: 38px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--gold-deep);
+  opacity: 0.45;
+}
+.gantt-task-name.child.last-in-group::before { bottom: 50%; }
+.gantt-task-name.child::after {
+  content: "";
+  position: absolute;
+  left: 38px;
+  top: 50%;
+  width: 14px;
+  height: 1.5px;
+  background: var(--gold-deep);
+  opacity: 0.55;
+}
+.gantt-task-name.child .gantt-task-name-text { font-size: 12px; color: var(--ink-soft); }
+.task-prereqs-badge {
+  background: var(--gold-deep);
+  color: #F5F1E8;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-left: 8px;
+  white-space: nowrap;
+  font-family: "Cambria", "Georgia", serif;
+  font-style: italic;
+}
 .gantt-task-name-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .gantt-task-owner { font-size: 10px; color: var(--muted); background: var(--grey-pale); padding: 2px 7px; border-radius: 2px; margin-left: 8px; white-space: nowrap; font-weight: 500; }
 .gantt-task-timeline { position: relative; background: var(--paper); border-bottom: 1px solid var(--rule-soft); min-height: 42px; }
 .gantt-task-timeline:hover { background: var(--paper-warm); }
+.gantt-task-timeline.parent { background: linear-gradient(90deg, var(--gold-faint) 0%, var(--paper) 30%); }
+.gantt-task-timeline.child { background: linear-gradient(90deg, rgba(140, 114, 57, 0.04) 0%, var(--paper) 8%); }
 
 .gantt-bar { position: absolute; top: 7px; height: 28px; border-radius: 4px; cursor: pointer; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.18); transition: transform 0.18s, box-shadow 0.18s; min-width: 20px; z-index: 2; }
 .gantt-bar::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 100%); pointer-events: none; border-radius: 4px 4px 0 0; }
@@ -305,6 +346,62 @@ select.btn { padding-right: 8px; }
 }
 .playbook-list li:last-child { border-bottom: none; }
 
+.panel-link-section {
+  background: var(--gold-faint);
+  border: 1px solid var(--gold-pale);
+  border-radius: 3px;
+  padding: 10px 14px;
+  margin-top: 4px;
+}
+.panel-link-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 0;
+  font-size: 12.5px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule-soft);
+  transition: color 0.15s;
+}
+.panel-link-row:last-child { border-bottom: none; }
+.panel-link-row:hover { color: var(--gold-deep); }
+.panel-link-row .arrow {
+  font-family: "Cambria", "Georgia", serif;
+  color: var(--gold-deep);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.panel-link-row .link-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.panel-link-row .link-status-dot.done { background: var(--green); }
+.panel-link-row .link-status-dot.progress { background: var(--amber); }
+.panel-link-row .link-status-dot.blocked { background: var(--crimson); }
+.panel-link-row .link-status-dot.not-started { background: var(--grey); }
+.panel-link-row .link-title { flex: 1; line-height: 1.4; }
+.panel-parent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-deep);
+  border-radius: 14px;
+  padding: 5px 12px;
+  font-size: 11px;
+  color: var(--gold-deep);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.panel-parent-pill:hover { background: var(--gold-deep); color: white; }
+.panel-parent-pill .pill-label { font-family: "Cambria", "Georgia", serif; font-style: italic; opacity: 0.85; }
+
 .legend { display: flex; gap: 22px; align-items: center; font-size: 11.5px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; padding: 10px 4px; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
 .legend-swatch { width: 16px; height: 14px; border-radius: 2px; }
@@ -478,15 +575,15 @@ const CATEGORIES = [
 
 const DEFAULT_TASKS = [
   // ===== EVENT ORGANISER =====
-  { c:'eo', t:'Outstanding items document for co-chairs', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-17', sm:'One-page summary of every item still open from last meeting. Co-chairs walk through Wed 10am call; signing falls out of that.', pb:'Compile pending items from last co-chairs meeting minutes\nFor each item add: status, blocker, next action, owner\nFormat as one-page document\nCirculate to Wei, Andrew and Lamley by 10am Wednesday\nWalk through document on Wednesday call\nCapture co-chair sign-off in writing (WhatsApp counts)\nOnce done, unblocks: Sign Blink Here Events contract' },
+  { c:'eo', t:'Outstanding items document for co-chairs', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-17', parent:'Sign Blink Here Events contract (S$34,600)', sm:'One-page summary of every item still open from last meeting. Co-chairs walk through Wed 10am call; signing falls out of that.', pb:'Compile pending items from last co-chairs meeting minutes\nFor each item add: status, blocker, next action, owner\nFormat as one-page document\nCirculate to Wei, Andrew and Lamley by 10am Wednesday\nWalk through document on Wednesday call\nCapture co-chair sign-off in writing (WhatsApp counts)\nOnce done, unblocks: Sign Blink Here Events contract' },
 
-  { c:'eo', t:'16 Jun 10:30am call with Ben — lock quotation + design', o:'James', s:'progress', p:50, sd:'2026-06-16', ed:'2026-06-16', sm:'Tuesday call with Ben Logan. Final ambiguity in the quotation gets resolved before signing.', pb:'Agenda set: lock quotation figures, lock design direction, surface remaining ambiguity\nSpecifically resolve: AI video methodology (RAS to shoot, Blink to send reference)\nSpecifically resolve: wristband programming approach\nSpecifically resolve: PE & SDL endorsement scope\nDocument outcomes via email same day to all co-chairs\nIf anything still open, set fast follow-up before signing\nOnce done, unblocks: Sign Blink Here Events contract' },
+  { c:'eo', t:'16 Jun 10:30am call with Ben — lock quotation + design', o:'James', s:'progress', p:50, sd:'2026-06-16', ed:'2026-06-16', parent:'Sign Blink Here Events contract (S$34,600)', sm:'Tuesday call with Ben Logan. Final ambiguity in the quotation gets resolved before signing.', pb:'Agenda set: lock quotation figures, lock design direction, surface remaining ambiguity\nSpecifically resolve: AI video methodology (RAS to shoot, Blink to send reference)\nSpecifically resolve: wristband programming approach\nSpecifically resolve: PE & SDL endorsement scope\nDocument outcomes via email same day to all co-chairs\nIf anything still open, set fast follow-up before signing\nOnce done, unblocks: Sign Blink Here Events contract' },
 
-  { c:'eo', t:'Blink AI video methodology + reference doc', o:'James + Blink', s:'blocked', p:0, sd:'2026-06-16', ed:'2026-06-18', b:'Needs to be confirmed in writing before signing.', sm:'Direct ask to Blink: confirm in writing that mobile vertical footage from RAS works for their AI post-production. They send a reference doc.', pb:'Direct ask to Blink at the 16 Jun call: if RAS shoots mobile vertical footage, what specifically do you need\nBlink returns one-page reference doc: framing, length, lighting, must-capture moments\nRAS reviews and confirms understanding via email\nReference doc becomes part of the signed contract scope\nOnce done, unblocks: Sign Blink Here Events contract · AI Video for Andrew & Wei (1 of 2)' },
+  { c:'eo', t:'Blink AI video methodology + reference doc', o:'James + Blink', s:'blocked', p:0, sd:'2026-06-16', ed:'2026-06-18', parent:'Sign Blink Here Events contract (S$34,600)', b:'Needs to be confirmed in writing before signing.', sm:'Direct ask to Blink: confirm in writing that mobile vertical footage from RAS works for their AI post-production. They send a reference doc.', pb:'Direct ask to Blink at the 16 Jun call: if RAS shoots mobile vertical footage, what specifically do you need\nBlink returns one-page reference doc: framing, length, lighting, must-capture moments\nRAS reviews and confirms understanding via email\nReference doc becomes part of the signed contract scope\nOnce done, unblocks: Sign Blink Here Events contract · AI Video for Andrew & Wei (1 of 2)' },
 
-  { c:'eo', t:'Wristband programming logic — Blink to RAS confirmation', o:'James + Blink', s:'blocked', p:30, sd:'2026-06-15', ed:'2026-06-19', b:'Blink currently working on programming logic, owe RAS a response.', sm:'Blink returns their proposed colour and blinking logic. RAS reviews against AAR notes, approves, locks into contract scope.', pb:'Wait for Blink to send their proposed colour and blink logic\nRAS reviews against AAR notes (colour-blind preferences, repeat alert per segment)\nApprove or request adjustments\nFinal logic baked into signed contract scope\nAssign cue controller separately later\nOnce done, unblocks: Sign Blink Here Events contract' },
+  { c:'eo', t:'Wristband programming logic — Blink to RAS confirmation', o:'James + Blink', s:'blocked', p:30, sd:'2026-06-15', ed:'2026-06-19', parent:'Sign Blink Here Events contract (S$34,600)', b:'Blink currently working on programming logic, owe RAS a response.', sm:'Blink returns their proposed colour and blinking logic. RAS reviews against AAR notes, approves, locks into contract scope.', pb:'Wait for Blink to send their proposed colour and blink logic\nRAS reviews against AAR notes (colour-blind preferences, repeat alert per segment)\nApprove or request adjustments\nFinal logic baked into signed contract scope\nAssign cue controller separately later\nOnce done, unblocks: Sign Blink Here Events contract' },
 
-  { c:'eo', t:'Co-chair alignment — Wei, Andrew, Lamley comfortable', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-19', sm:'Each co-chair walked through the outstanding items and gives a verbal or written signal that they are comfortable to proceed with signing.', pb:'Send outstanding items document to all three co-chairs by Wed 10am\nWalk through document on Wednesday call\nWei: get verbal "comfortable to proceed" signal\nAndrew: get verbal signal\nLamley: get verbal signal\nDocument all three (WhatsApp screenshots fine) before signing\nOnce done, unblocks: Sign Blink Here Events contract' },
+  { c:'eo', t:'Co-chair alignment — Wei, Andrew, Lamley comfortable', o:'James', s:'progress', p:30, sd:'2026-06-15', ed:'2026-06-19', parent:'Sign Blink Here Events contract (S$34,600)', sm:'Each co-chair walked through the outstanding items and gives a verbal or written signal that they are comfortable to proceed with signing.', pb:'Send outstanding items document to all three co-chairs by Wed 10am\nWalk through document on Wednesday call\nWei: get verbal "comfortable to proceed" signal\nAndrew: get verbal signal\nLamley: get verbal signal\nDocument all three (WhatsApp screenshots fine) before signing\nOnce done, unblocks: Sign Blink Here Events contract' },
 
   { c:'eo', t:'Sign Blink Here Events contract (S$34,600)', o:'James', s:'blocked', p:30, sd:'2026-06-19', ed:'2026-06-19', b:'5 prerequisites must clear: Outstanding items document for co-chairs · 16 Jun 10:30am call with Ben · Blink AI video methodology + reference doc · Wristband programming logic — Blink to RAS confirmation · Co-chair alignment — Wei, Andrew, Lamley comfortable', sm:'The signing event itself. Lands once the five prerequisite tasks above are all green. Quotation S$34,600, down S$5,400 from S$40,000.', pb:'Confirm all five prerequisites have turned green\nJames signs contract\nBlink countersigns\nFirst deliverables begin: backdrop visual and EDM production starts the next day\n50% deposit invoice to Vivian for payment within agreed terms\nOnce signed, unblocks: Backdrop visual + EDM · LED entrance tunnel production · eDM blast · Animated backdrop · Joint site recce · Fuel for the Fire 30-second sequence · Show MCs a preview of the event' },
 
@@ -809,7 +906,8 @@ async function saveState() {
 function initDefaults() {
   state = { tasks: DEFAULT_TASKS.map((t, i) => ({
     id: 't' + i, category: t.c, title: t.t, owner: t.o, status: t.s, pct: t.p,
-    startDate: t.sd, endDate: t.ed, blocker: t.b || '', summary: t.sm || '', playbook: t.pb || ''
+    startDate: t.sd, endDate: t.ed, blocker: t.b || '', summary: t.sm || '', playbook: t.pb || '',
+    parent: t.parent || ''
   })) };
 }
 
@@ -873,7 +971,8 @@ function csvRowsToTasks(rows) {
     endDate: r['End Date'] || r.End || '',
     blocker: r.Blocker || r.blocker || '',
     summary: r.Summary || r.summary || '',
-    playbook: r.Playbook || r.playbook || ''
+    playbook: r.Playbook || r.playbook || '',
+    parent: r.Parent || r.parent || ''
   })).filter(t => t.title);
 }
 
@@ -1046,12 +1145,45 @@ function getFilteredTasks() {
   return state.tasks.filter(t => (!oF || t.owner === oF) && (!sF || t.status === sF));
 }
 
+function orderAndAnnotate(catTasks, childrenByParent) {
+  const result = [];
+  const consumed = new Set();
+  catTasks.forEach(t => {
+    if (t.parent && state.tasks.some(p => p.title === t.parent)) return;
+    if (consumed.has(t.id)) return;
+    consumed.add(t.id);
+    const childrenAll = childrenByParent[t.title] || [];
+    const childrenInFilter = childrenAll.filter(c => catTasks.includes(c));
+    result.push({ task: t, isChild: false, isParent: childrenAll.length > 0, childCount: childrenAll.length, isLastChild: false });
+    childrenInFilter.forEach((c, i) => {
+      consumed.add(c.id);
+      result.push({ task: c, isChild: true, isParent: false, childCount: 0, isLastChild: i === childrenInFilter.length - 1 });
+    });
+  });
+  catTasks.forEach(t => {
+    if (!consumed.has(t.id)) {
+      consumed.add(t.id);
+      result.push({ task: t, isChild: false, isParent: false, childCount: 0, isLastChild: false });
+    }
+  });
+  return result;
+}
+
 function renderGantt() {
   const g = document.getElementById('gantt');
   while (g.children.length > 2) g.removeChild(g.lastChild);
   const filtered = getFilteredTasks();
   const tX = dateToX(TODAY.toISOString().slice(0, 10));
   const eX = dateToX(EVENT_DATE.toISOString().slice(0, 10));
+
+  // Build childrenByParent map across ALL state tasks (so we know parent/child even if filtered)
+  const childrenByParent = {};
+  state.tasks.forEach(t => {
+    if (t.parent) {
+      if (!childrenByParent[t.parent]) childrenByParent[t.parent] = [];
+      childrenByParent[t.parent].push(t);
+    }
+  });
 
   [
     { s: '2025-11-01', e: '2025-12-31', ev: false },
@@ -1087,20 +1219,28 @@ function renderGantt() {
     ct.innerHTML = `<div class="gantt-cat-progress-bar"><div class="gantt-cat-progress-fill" style="width:${pct}%"></div></div><div class="gantt-cat-pct">${pct}%</div>`;
     g.appendChild(ct);
 
-    catTasks.forEach(task => {
+    const ordered = orderAndAnnotate(catTasks, childrenByParent);
+    ordered.forEach(({ task, isChild, isParent, childCount, isLastChild }) => {
       const tn = document.createElement('div');
-      tn.className = 'gantt-task-name' + (task.id === currentPanelTaskId ? ' active-task' : '');
+      tn.className = 'gantt-task-name' +
+        (task.id === currentPanelTaskId ? ' active-task' : '') +
+        (isChild ? ' child' : '') +
+        (isLastChild ? ' last-in-group' : '') +
+        (isParent ? ' parent' : '');
       tn.dataset.catId = cat.id;
       if (collapsed.has(cat.id)) tn.style.display = 'none';
       tn.onclick = () => openPanel(task.id);
       tn.onmouseenter = (e) => showTooltip(e, task);
       tn.onmousemove = (e) => positionTooltip(e);
       tn.onmouseleave = () => hideTooltip();
-      tn.innerHTML = `<span class="gantt-task-name-text">${escapeHtml(task.title)}</span><span class="gantt-task-owner">${escapeHtml(task.owner)}</span>`;
+      const prereqsBadge = isParent ? `<span class="task-prereqs-badge">${childCount} prereqs</span>` : '';
+      tn.innerHTML = `<span class="gantt-task-name-text">${escapeHtml(task.title)}</span>${prereqsBadge}<span class="gantt-task-owner">${escapeHtml(task.owner)}</span>`;
       g.appendChild(tn);
 
       const tt = document.createElement('div');
-      tt.className = 'gantt-task-timeline';
+      tt.className = 'gantt-task-timeline' +
+        (isChild ? ' child' : '') +
+        (isParent ? ' parent' : '');
       tt.dataset.catId = cat.id;
       if (collapsed.has(cat.id)) tt.style.display = 'none';
 
@@ -1157,6 +1297,32 @@ function openPanel(taskId) {
   hideTooltip();
   currentPanelTaskId = taskId;
   
+  // Find parent and children
+  const parentTask = t.parent ? state.tasks.find(x => x.title === t.parent) : null;
+  const childrenTasks = state.tasks.filter(x => x.parent === t.title);
+  
+  const parentPillHtml = parentTask ? `
+    <div class="panel-section" style="margin-top: 14px;">
+      <div class="panel-parent-pill" onclick="openPanel('${parentTask.id}')">
+        <span class="pill-label">Part of:</span>
+        <span>${escapeHtml(parentTask.title)}</span>
+      </div>
+    </div>` : '';
+  
+  const childrenHtml = childrenTasks.length > 0 ? `
+    <div class="panel-section">
+      <div class="panel-section-label">Prerequisites (${childrenTasks.length})</div>
+      <div class="panel-link-section">
+        ${childrenTasks.map(c => `
+          <div class="panel-link-row" onclick="openPanel('${c.id}')">
+            <span class="link-status-dot ${c.status}"></span>
+            <span class="link-title">${escapeHtml(c.title)}</span>
+            <span class="arrow">→</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : '';
+  
   const blockerHtml = t.blocker ? `
     <div class="panel-section">
       <div class="panel-section-label">Blocker</div>
@@ -1199,19 +1365,20 @@ function openPanel(taskId) {
         <span class="panel-owner-badge">${escapeHtml(t.owner)}</span>
         <span class="panel-dates">${fmtDate(t.startDate)} → ${fmtDate(t.endDate)}</span>
       </div>
+      ${parentPillHtml}
     </div>
     <div class="panel-body">
       ${summaryHtml}
       ${blockerHtml}
+      ${childrenHtml}
       ${playbookHtml}
     </div>
   `;
   
   document.getElementById('slidePanel').classList.add('open');
+  document.getElementById('slidePanel').scrollTop = 0;
   document.body.classList.add('panel-open');
-  // Mark active task highlight
   document.querySelectorAll('.gantt-task-name').forEach(el => el.classList.remove('active-task'));
-  // Re-render to apply active state — or just find the matching row
   document.querySelectorAll('.gantt-task-name').forEach(el => {
     if (el.onclick && el.onclick.toString().includes("'" + taskId + "'")) {
       el.classList.add('active-task');
@@ -1264,7 +1431,7 @@ function csvEscape(s) {
 }
 
 function exportCSV() {
-  const headers = ['Category','Title','Owner','Status','% Complete','Start Date','End Date','Blocker','Summary','Playbook'];
+  const headers = ['Category','Title','Owner','Status','% Complete','Start Date','End Date','Parent','Blocker','Summary','Playbook'];
   const catNameById = {}; CATEGORIES.forEach(c => { catNameById[c.id] = c.n; });
   const statusName = { 'done':'Done', 'progress':'In progress', 'blocked':'Blocked', 'not-started':'Not started' };
   const rows = [headers.join(',')];
@@ -1277,6 +1444,7 @@ function exportCSV() {
       csvEscape(t.pct),
       csvEscape(t.startDate),
       csvEscape(t.endDate),
+      csvEscape(t.parent || ''),
       csvEscape(t.blocker),
       csvEscape(t.summary),
       csvEscape(t.playbook)
